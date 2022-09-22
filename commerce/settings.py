@@ -10,6 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+from decouple import config
+
+import cloudinary
+import cloudinary.api
+import cloudinary.uploader
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,12 +44,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'cloudinary',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -77,8 +86,11 @@ WSGI_APPLICATION = 'commerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DATABASE_DBNAME'),
+        'USER': config('DATABASE_USER'),
+        'HOST': 'localhost',
+        'PASSWORD': config('DATABASE_PASS')
     }
 }
 
@@ -129,11 +141,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #JAZZMIN
 
 JAZZMIN_SETTINGS = {
-    "site_title": "Auction Admin",
-    "site_header": "Auction",
-    "site_brand": "Auction",
-    "copyright": "Auction",
-    "welcome_sign": "Welcome to Auction",
+    "site_title": "Subasta Admin",
+    "site_header": "Subasta",
+    "site_brand": "Subasta",
+    "copyright": "Subasta Auction",
+    "welcome_sign": "Welcome to Subasta",
+    # "site_logo": "books/img/connecto.jpg",
+    # "login_icon": "books/img/connecto.jpg",
     "show_ui_builder": False,
 }
 
@@ -143,6 +157,12 @@ JAZZMIN_UI_TWEAKS = {
     # "dark_mode_theme": "darkly",
 }
 
+#CLOUDINARY
+cloudinary.config( 
+  cloud_name = config('CLOUDINARY_CLOUD_NAME'), 
+  api_key = config('CLOUDINARY_API_KEY'), 
+  api_secret = config('CLOUDINARY_API_SECRET') 
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

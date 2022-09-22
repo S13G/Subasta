@@ -1,9 +1,7 @@
-from tabnanny import verbose
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
-
-from auctions.item import get_media_paths
 
 
 class User(AbstractUser):
@@ -11,8 +9,8 @@ class User(AbstractUser):
 
 
 class ItemImage(models.Model):
-    image = models.ImageField(upload_to=get_media_paths)
-
+    image = CloudinaryField('image', null=True)
+    
 
 class AuctionCategory(models.Model):
     name = models.CharField(max_length=255)
