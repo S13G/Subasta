@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from auctions.forms import CreateForm
+from auctions.forms import CreateForm, PlaceBidForm
 
 from .models import User, AuctionItem
 
@@ -108,3 +108,10 @@ def delete_watchlist(request, pk):
 @login_required(login_url='login')
 def bid(request, pk):
     auction_item = AuctionItem.objects.get(id=pk)
+    form = PlaceBidForm()
+    user = request.user.username
+    if request.method == "POST":
+        form = PlaceBidForm(request.POST)
+        bid = form.cleaned_data.get("bid")
+    context = {"auction_item": auction_item, "bid": bid, "form": form, "user": user}
+    return render(request, "auctions/details.html", context)

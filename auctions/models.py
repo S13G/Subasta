@@ -38,6 +38,7 @@ class AuctionItem(models.Model):
 
 
 class AuctionBid(models.Model):
+    auction_item = models.ForeignKey(AuctionItem, on_delete=models.CASCADE, null=True)
     bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)])
     bidder = models.CharField(max_length=255)
 
