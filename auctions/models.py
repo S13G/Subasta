@@ -1,4 +1,3 @@
-from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -24,7 +23,8 @@ class AuctionCategory(models.Model):
 class AuctionItem(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     item_name = models.CharField(max_length=255)
-    image = CloudinaryField('image', null=True)
+    image = models.ImageField(null=True, blank=True, default='default.jpg')
+    image_url = models.URLField(max_length=300, null=True, blank=True)
     category = models.ForeignKey(AuctionCategory, on_delete=models.CASCADE, null=True)
     description = models.TextField()
     watchlist = models.BooleanField(default=False)

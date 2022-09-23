@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 from decouple import config
 
-import cloudinary
-import cloudinary.api
-import cloudinary.uploader
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -134,9 +131,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 #JAZZMIN
 
@@ -156,13 +155,6 @@ JAZZMIN_UI_TWEAKS = {
     "body_small_text": True,
     # "dark_mode_theme": "darkly",
 }
-
-#CLOUDINARY
-cloudinary.config( 
-  cloud_name = config('CLOUDINARY_CLOUD_NAME'), 
-  api_key = config('CLOUDINARY_API_KEY'), 
-  api_secret = config('CLOUDINARY_API_SECRET') 
-)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
