@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Watchlists</h2>
+
+    <p>Number of item in watchlist: {{ count }}</p>
+
+    {% for auction in verified_auction %}
+        <h2>Title: {{ auction.item_name }}</h2>
+        <img style="max-width: 300px" src="{{ auction.image.url }}" />
+        <p>Category: {{ auction.category }}</p>
+        <p>Description: {{ auction.description }}*</p>
+        <p>$Current price: {{ auction.price }}</p>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit"><a href="{% url 'delete_watchlist' pk=auction.pk %}">Remove {{ auction.item_name }}</a></button>
+        </form>
+    {% endfor %}
+{% endblock %}

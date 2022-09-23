@@ -1,0 +1,12 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Delete Watchlists item</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <p>Are you sure you want to remove {{ verified_auction.item_name }} from the watchlist?</p>
+            <a href="{% url 'watchlist' %}">Go back</a>
+            <a href="{% url 'delete_watchlist' pk=verified_auction.pk %}"><button type="submit">Yes, remove {{ verified_auction.item_name }}</button>
+        </form>
+{% endblock %}

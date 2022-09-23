@@ -86,3 +86,25 @@ def listing_details(request, pk):
     auction_item = AuctionItem.objects.get(id=pk)
     context = {'auction_item': auction_item}
     return render(request, 'auctions/details.html', context)
+
+@login_required(login_url='login')
+def watchlist(request):
+    verified_auction = AuctionItem.objects.filter(watchlist=True)
+    verified_auction_count = verified_auction.count()
+    context = {"verified_auction": verified_auction, "count": verified_auction_count}
+    return render(request, "auctions/watchlist.html", context)
+
+
+@login_required(login_url='login')
+def delete_watchlist(request, pk):
+    verified_auction = AuctionItem.objects.get(id=pk)
+    if request.method == "POST":
+        verified_auction.delete()
+        return redirect('watchlist')
+    context = {"verified_auction": verified_auction, "message": "Watchlist item deleted"}
+    return render(request, "auctions/delete_watchlist.html", context)
+
+
+@login_required(login_url='login')
+def bid(request, pk):
+    auction_item = AuctionItem.objects.get(id=pk)
