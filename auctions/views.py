@@ -78,5 +78,11 @@ def create_listings(request):
             form.save()
             return redirect('index')
         return redirect('create')
-    context = {"form": form}
+    context = {"form": form, "message": "Please fill form properly"}
     return render(request, "auctions/create.html", context)
+
+
+def listing_details(request, pk):
+    auction_item = AuctionItem.objects.get(id=pk)
+    context = {'auction_item': auction_item}
+    return render(request, 'auctions/details.html', context)

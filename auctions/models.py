@@ -28,7 +28,8 @@ class AuctionItem(models.Model):
     category = models.ForeignKey(AuctionCategory, on_delete=models.CASCADE, null=True)
     description = models.TextField()
     watchlist = models.BooleanField(default=False)
-    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)])
+    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], null=True, default=0)
+    starting_bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0, null=True)
     listed_by = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
 

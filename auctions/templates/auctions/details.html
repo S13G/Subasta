@@ -1,0 +1,11 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing Details</h2>
+        <h2>Title: {{ auction_item.item_name }}</h2>
+        <img style="max-width: 300px" src="{{ auction_item.image.url }}" />
+        <p>Category: {{ auction_item.category }}</p>
+        <p>Description: {{ auction_item.description }}*</p>
+        <p>Current price: ${{ auction_item.price }}</p>
+        <p>Starting bid: ${{ auction_item.starting_bid }}</p>
+{% endblock %}
