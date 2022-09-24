@@ -10,9 +10,7 @@ class CreateForm(forms.ModelForm):
         fields = ['item_name', 'image', 'image_url', 'category', 'description', 'watchlist', 'price', 'starting_bid']
 
 
-class PlaceBidForm(forms.ModelForm):
-    bid = forms.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)])
-    
+class PlaceBidForm(forms.ModelForm):    
     class Meta:
         model = AuctionBid
         fields = ['bid', 'bidder']

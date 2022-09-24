@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from auctions.forms import CreateForm, PlaceBidForm
@@ -107,11 +107,15 @@ def delete_watchlist(request, pk):
 
 @login_required(login_url='login')
 def bid(request, pk):
-    auction_item = AuctionItem.objects.get(id=pk)
-    form = PlaceBidForm()
+    auction_item = get_object_or_404(AuctionItem, id=pk)
     user = request.user.username
     if request.method == "POST":
-        form = PlaceBidForm(request.POST)
-        bid = form.cleaned_data.get("bid")
-    context = {"auction_item": auction_item, "bid": bid, "form": form, "user": user}
+        bid_form = PlaceBidForm(data=request.POST)
+        if bid_form.is_valid():
+            bid = bid_form.cleaned_data.get("bid")
+            print(bid)
+            bid_form.save()
+    else:
+        bid_form = PlaceBidForm()
+    context = {"auction_item": auction_item, "bid": bid, "bid_form": bid_form, "user": user}
     return render(request, "auctions/details.html", context)
