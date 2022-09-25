@@ -25,12 +25,11 @@ class AuctionItem(models.Model):
     item_name = models.CharField(max_length=255)
     image = models.ImageField(null=True, blank=True, default='default.jpg')
     image_url = models.URLField(max_length=300, null=True, blank=True)
-    category = models.ForeignKey(AuctionCategory, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(AuctionCategory, on_delete=models.CASCADE, null=True, default=None)
     description = models.TextField()
-    watchlist = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], null=True, default=0)
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0, null=True)
-    listed_by = models.CharField(max_length=255)
+    listed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
@@ -40,7 +39,7 @@ class AuctionItem(models.Model):
 class AuctionBid(models.Model):
     auction_item = models.ForeignKey(AuctionItem, on_delete=models.CASCADE, null=True)
     bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)])
-    bidder = models.CharField(max_length=255)
+    bidder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
         return f"{self.bidder} = {self.bid}"

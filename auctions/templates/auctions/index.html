@@ -6,8 +6,8 @@
     {% for auction in auctions  %}
         <h2>Title: <a href="{% url 'details' pk=auction.pk %}">{{ auction.item_name }}</a></h2>
         <a href="{% url 'details' pk=auction.pk %}"><img style="max-width: 300px" src="{{ auction.image.url }}" /></a>
-        <p>Category: {{ auction.category }}</p>
         <p>Description: {{ auction.description }}*</p>
-        <p>$Current price: {{ auction.price }}</p>
+        <b><p>Price:</b> ${{ auction.price }}</p>
+        <p>Created: {{ auction.created }}</p>
     {% endfor %}
 {% endblock %}

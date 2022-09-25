@@ -7,7 +7,7 @@ from django.urls import reverse
 
 from auctions.forms import CreateForm, PlaceBidForm
 
-from .models import User, AuctionItem
+from .models import AuctionBid, User, AuctionItem
 
 
 def index(request):
@@ -108,8 +108,8 @@ def delete_watchlist(request, pk):
 @login_required(login_url='login')
 def bid(request, pk):
     bid_form = PlaceBidForm()
-    auction_item = get_object_or_404(AuctionItem, id=pk)
-    user = request.user.username
+    bid_item = get_object_or_404(AuctionItem, id=pk)
+
     if request.method == "POST":
         bid_form = PlaceBidForm(data=request.POST)
         if bid_form.is_valid():
@@ -118,5 +118,5 @@ def bid(request, pk):
             bid_form.save()
     else:
         bid_form = PlaceBidForm()
-    context = {"auction_item": auction_item, "bid": bid, "bid_form": bid_form, "user": user}
+    context = {"bid_item": bid_item, "bid": bid, "bid_form": bid_form}
     return render(request, "auctions/details.html", context)

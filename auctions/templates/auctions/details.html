@@ -1,27 +1,30 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Listing Details</h2>
-        <h2>Title: {{ auction_item.item_name }}</h2>
-        <img style="max-width: 300px" src="{{ auction_item.image.url }}" />
-        <p>Description: {{ auction_item.description }}*</p>
-        <p>Current price: ${{ auction_item.price }}</p>
-        <p>Starting bid: ${{ auction_item.starting_bid }}</p>
+    <h2>Listing: {{ auction_item.item_name }}</h2>
+    <img style="max-width: 300px" src="{{ auction_item.image.url }}" />
+    <p>Description: {{ auction_item.description }}*</p>
+    <p>Current price: ${{ auction_item.price }}</p>
+    <p>Starting bid: ${{ auction_item.starting_bid }}</p>
 
-        <form method="POST">
-            {% csrf_token %}
-            {{ bid_form.as_p }}
-            <input type="submit" value="Place Bid"/>
-        </form>        
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ bid_form.as_p }}
+        <input type="submit" value="Place Bid"/>
+    </form>        
 
-        <h3>Details:</h3>
-        <ul>
-            <li>Listed by: {{ user }}</li>
-            <li>Category: {{ auction_item.category }}</li>
-        </ul>
-
-        {% if user.is_authenticated %}
-        <p>${{ bid }}</p>
-        <p>Bidder: {{ user }}
+    <h3>Details:</h3>
+    <ul>
+        <li>Listed by: {{ auction_item.listed_by }}</li>
+        {% if not auction_item.category %}
+        <li>Category: No Category Selected</li>
+        {% else %}
+        <li>Category: {{ auction_item.category }}</li>
         {% endif %}
+    </ul>
+
+    {% if user.is_authenticated %}
+    <p>${{ bid_item.bid }}</p>
+    <p>Bidder: {{ bid_item.bidder }}
+    {% endif %}
 {% endblock %}
