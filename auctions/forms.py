@@ -10,7 +10,8 @@ class CreateForm(forms.ModelForm):
         fields = ['item_name', 'image', 'image_url', 'category', 'description', 'watchlist', 'price', 'starting_bid']
 
 
-class PlaceBidForm(forms.ModelForm):    
+class PlaceBidForm(forms.Form):    
+    name = forms.CharField(max_length=100)
     class Meta:
         model = AuctionBid
-        fields = ['bid', 'bidder']
+        fields = ['name', 'bid', 'bidder']

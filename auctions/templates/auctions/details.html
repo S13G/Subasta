@@ -8,18 +8,16 @@
         <p>Current price: ${{ auction_item.price }}</p>
         <p>Starting bid: ${{ auction_item.starting_bid }}</p>
 
-        {% if user.is_authenticated %}
         <form method="POST">
             {% csrf_token %}
-            {{ bid_form }}
+            {{ bid_form.as_p }}
             <input type="submit" value="Place Bid"/>
         </form>        
-        {% endif %}
 
         <h3>Details:</h3>
         <ul>
-            <li>Listed by: {{ auction_item.listed_by }}</li>
-            <li>Category: {{ auction.category }}</li>
+            <li>Listed by: {{ user }}</li>
+            <li>Category: {{ auction_item.category }}</li>
         </ul>
 
         {% if user.is_authenticated %}

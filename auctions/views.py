@@ -107,6 +107,7 @@ def delete_watchlist(request, pk):
 
 @login_required(login_url='login')
 def bid(request, pk):
+    bid_form = PlaceBidForm()
     auction_item = get_object_or_404(AuctionItem, id=pk)
     user = request.user.username
     if request.method == "POST":
