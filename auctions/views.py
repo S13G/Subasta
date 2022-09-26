@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -70,22 +71,38 @@ def register(request):
 
 @login_required(login_url="login")
 def create_listings(request):
-    form = CreateForm()
-
     if request.method == "POST":
-        form = CreateForm(request.POST, request.FILES)
+        form = CreateForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
+            form.instance.user = request.user
             form.save()
             return redirect('index')
         return redirect('create')
+    else:
+        form = CreateForm(user=request.user)
     context = {"form": form, "message": "Please fill form properly"}
     return render(request, "auctions/create.html", context)
 
 
 def listing_details(request, pk):
-    auction_item = AuctionItem.objects.get(id=pk)
-    context = {'auction_item': auction_item}
+    auction_item = get_object_or_404(AuctionItem, id=pk)
+    bids = auction_item.bids.all()
+    if request.method == "POST":
+        bid_form = PlaceBidForm(data=request.POST, user=request.user)
+        if bid_form.is_valid():
+            bid_form.cleaned_data["bid"]
+            bid_form.instance.user = request.user
+            new_bid = bid_form.save(commit=False)
+            new_bid.auction_item = auction_item
+            new_bid.save()
+            messages.success(request, "Bid has been successfully made")
+        else:
+            messages.error(request, "Bid wasn't made successfully")
+    else:
+        bid_form = PlaceBidForm()
+    context = {'auction_item': auction_item, "bid_form": bid_form, "bids": bids}
     return render(request, 'auctions/details.html', context)
+
 
 @login_required(login_url='login')
 def watchlist(request):
@@ -103,20 +120,3 @@ def delete_watchlist(request, pk):
         return redirect('watchlist')
     context = {"verified_auction": verified_auction, "message": "Watchlist item deleted"}
     return render(request, "auctions/delete_watchlist.html", context)
-
-
-@login_required(login_url='login')
-def bid(request, pk):
-    bid_form = PlaceBidForm()
-    bid_item = get_object_or_404(AuctionItem, id=pk)
-
-    if request.method == "POST":
-        bid_form = PlaceBidForm(data=request.POST)
-        if bid_form.is_valid():
-            bid = bid_form.cleaned_data.get("bid")
-            print(bid)
-            bid_form.save()
-    else:
-        bid_form = PlaceBidForm()
-    context = {"bid_item": bid_item, "bid": bid, "bid_form": bid_form}
-    return render(request, "auctions/details.html", context)

@@ -12,4 +12,4 @@ class CreateForm(forms.ModelForm):
 class PlaceBidForm(forms.ModelForm):    
     class Meta:
         model = AuctionBid
-        fields = ['bid', 'bidder']
+        fields = ['bid']

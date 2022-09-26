@@ -29,7 +29,7 @@ class AuctionItem(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], null=True, default=0)
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0, null=True)
-    listed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    listed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="lister")
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
@@ -37,17 +37,17 @@ class AuctionItem(models.Model):
 
 
 class AuctionBid(models.Model):
-    auction_item = models.ForeignKey(AuctionItem, on_delete=models.CASCADE, null=True)
+    auction_item = models.ForeignKey(AuctionItem, on_delete=models.CASCADE, null=True, related_name='bids')
     bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)])
     bidder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
-        return f"{self.bidder} = {self.bid}"
+        return f"{self.auction_item} = {self.bid}"
 
 
 class Comment(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
-    auction_item = models.ForeignKey(AuctionItem, on_delete=models.CASCADE)
+    auction_item = models.ForeignKey(AuctionItem, on_delete=models.CASCADE, related_name='comments')
     comment = models.TextField()
     author = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
