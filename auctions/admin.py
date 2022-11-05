@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from auctions.models import AuctionBid, AuctionCategory, AuctionItem, Comment, User
+from auctions.models import AuctionBid, AuctionCategory, AuctionItem, Comment
 
-admin.site.register([User, AuctionCategory, AuctionItem, AuctionBid, Comment])
+admin.site.register([AuctionCategory, AuctionItem, AuctionBid, Comment])

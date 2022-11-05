@@ -25,8 +25,9 @@ class AuctionItem(models.Model):
     title = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from='title', unique=True, always_update=True)
     description = models.TextField()
-    category = models.ForeignKey(AuctionCategory, on_delete=models.CASCADE, null=True, default=None, related_name='auction_items')
-    item_image = models.ImageField(null=True, default='default.jpg')
+    category = models.ForeignKey(AuctionCategory, on_delete=models.CASCADE, null=True, default=None,
+                                 related_name='auction_items')
+    image = models.ImageField(null=True, default='default.jpg')
     image_url = models.URLField(max_length=500, null=True, blank=True)
     listed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='items')
     price = models.DecimalField(decimal_places=2, max_digits=10, validators=[MinValueValidator(1)], default=0)
@@ -47,7 +48,7 @@ class AuctionItem(models.Model):
 class AuctionBid(models.Model):
     auction_item = models.ForeignKey(AuctionItem, on_delete=models.CASCADE, null=True, related_name='auction_bid')
     bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)])
-    bidder = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='auction_bid')
+    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name='auction_bid')
     created = models.DateTimeField(default=timezone.now)
 
     def __str__(self) -> str:

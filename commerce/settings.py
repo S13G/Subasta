@@ -49,6 +49,7 @@ THIRD_PARTY_APPS = [
     'cloudinary',
     'debug_toolbar',
     'sweetify',
+    'autoslug', # create automatic slug
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
