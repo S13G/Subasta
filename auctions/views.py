@@ -1,14 +1,23 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from auctions.models import User, AuctionItem, Category
 
 
-def index(request):
-    return render(request, "auctions/index.html")
+def home(request):
+    featured_items = AuctionItem.objects.all().order_by("-id")[:6:-1]
+    context = {"featured_items": featured_items}
+    return render(request, "index.html", context)
+
+
+def all_auctions(request):
+    categories = Category.objects.all()
+    items = AuctionItem.objects.all()
+    context = {"categories": categories, "items": items}
+    return render(request, "auctions/all-auctions.html", context)
 
 
 def login_view(request):

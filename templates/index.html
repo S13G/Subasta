@@ -1,0 +1,151 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block body %}
+<!-- Header Section -->
+<div class="container-fluid pt-5">
+    <div class="row mx-md-5 my-4">
+      <div class="col-12 col-md-12 col-lg-7 py-5 align-items-center">
+        <p class="text-danger fw-bold">Welcome to the Auction House</p>
+        <h1 class="display-3 fw-bold mb-3">Build, sell & collect digital items.</h1>
+        <p class="mb-5">
+          <small>
+            Nulla facilisi. Maecenas tellus ut ligula interdum  convallis. Nullam dapibus on erat in dolor posuere, none hendrerit lectus ornare. Suspendisse sit amet turpina sagittis, ultrices dui et, aliquam urna.
+          </small>
+
+        </p>
+        <a href="{% url 'listings' %}">
+            <button class="btn btn-md btn-danger explore">Start Exploring</button></a>
+      </div>
+
+      <div class="col-12 col-md-12 col-lg-5 py-5 align-items-center">
+        <img src="{% static 'assets/images/chayka-boredapeclub.jpg' %}" alt="Bored Ape" class="img-fluid">
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Live Auction -->
+  <div class="container-fluid">
+    <div class="row mx-md-5">
+      <div class="col-md-5">
+        <h1 class="display-5 fw-bold">Live Auction</h1>
+        <p>Explore on the world's best & largest Bidding marketplace with our beautiful Bidding products. We want to be a part of your smile, success and future growth.</p>
+      </div>
+      <div class="col-3 d-none d-lg-block"></div>
+
+      <div class="col-md-3 align-items-center d-flex justify-content-end">
+        <a href="{% url 'listings' %}">
+          <button class="btn btn-md px-5 btn-danger">View All</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="row mx-md-5 mb-5 p-3">
+      <!-- i think if you are gonna have multiple items, continous html blocks would be unhealthy, so you can use whater=ver function you have under your sleeves to replicate one column from  -->
+      <!-- Here ...Start -->
+      {% for item in featured_items %}
+      <div class="col-12 col-md-6 col-lg-4 p-3 auction-card  text-center">
+        <div class=" p-3 auction border border-outline-1">
+          <a href="./auction-detail.html">
+            <div class="auction-photo">
+              <img src="{{ item.image_url }}" alt="auction-1" class="img-fluid">
+              <p class="fw-bold auction-time text-danger bg-white m-0 p-3 mx-auto">{{ item.name }}</p>
+            </div>
+          </a>
+          <div class="auction-details">
+            <h3 class="text-start fs-4">{{ item.description|slice:"30" }}</h3>
+
+            <div class="auctioner my-3 d-flex justify-content-between">
+              <div class="user d-flex align-items-center">
+                <img src="{% static 'assets/images/auction-authr1.png' %}" alt="auction author" class="img-fluid me-3">
+                <p class="">By {{ item.listed_by }}</p>
+              </div>
+
+              <h4 class="text-danger">${{ item.price }}</h4>
+            </div>
+            <div class="auction-action d-flex align-items-center justify-content-between">
+              
+              <button class="btn btn-md btn-danger">Place a Bid</button>
+
+              <div class="action-btns d-flex justify-content-between">
+                <i class="fa fa-2x text-secondary fa-solid fa-heart me-3"></i>
+                <i class="fa fa-2x  fa-solid fa-ellipsis-v"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- To Here ...Stop... then you can delete these from below... be sure to collapse the blocks to have a better view -->
+    </div>
+      
+      
+  <!-- Testimonials -->
+  <div class="container-fluid mb-5 pb-5">
+    <div class="row text-center">
+      <div class="col-2 d-none d-lg-block">
+      </div>
+      <div class="col-12 col-lg-8 my-5">
+        <h1>What Clients Say</h1>
+        <p class="mx-md-5 px-md-5">Explore on the world's best & largest Bidding marketplace with our beautiful Bidding products. We want to be a part of your smile, success and future growth.</p>
+      </div>
+      <div class="col-2 d-none d-lg-block">
+      </div>
+    </div>
+
+
+    <div class="row mx-md-5 px-3">
+
+      <div class="col-12 col-md-6 col-lg-4 p-2">
+        <div class="testimonial p-3">
+          <div class="img-group d-flex justify-content-between">
+            <div class="test-desc d-grid">
+              <img src="{% static 'assets/images/testi1.png' %}" alt="testi1" class="testimonial-img img-fluid mb-3">
+              <h5 class="mb-0">Johan Martin R</h5>
+              <p><small>CEO Founder</small></p>
+            </div>
+            <img src="{% static 'assets/images/lg_icons/quote-red.svg' %}" alt="quote" class="img-fluid align-self-start">
+          </div>
+          <div class="testimonial-text">
+            <p><em>Maecenas vitae porttitor neque, ac porttitor nunc. Duis venenatis lacinia libero. Nam nec augue ut nunc vulputate tincidunt at suscipit nunc.</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 p-2">
+        <div class="testimonial p-3">
+          <div class="img-group d-flex justify-content-between">
+            <div class="test-desc d-grid">
+              <img src="{% static 'assets/images/testi1.png' %}" alt="testi1" class="testimonial-img img-fluid mb-3">
+              <h5 class="mb-0">Johan Martin R</h5>
+              <p><small>CEO Founder</small></p>
+            </div>
+            <img src="{% static './assets/images/lg_icons/quote-red.svg' %}" alt="quote" class="img-fluid align-self-start">
+          </div>
+          <div class="testimonial-text">
+            <p><em>Maecenas vitae porttitor neque, ac porttitor nunc. Duis venenatis lacinia libero. Nam nec augue ut nunc vulputate tincidunt at suscipit nunc.</em></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 p-2">
+        <div class="testimonial p-3">
+          <div class="img-group d-flex justify-content-between">
+            <div class="test-desc d-grid">
+              <img src="{% static 'assets/images/testi1.png' %}" alt="testi1" class="testimonial-img img-fluid mb-3">
+              <h5 class="mb-0">Johan Martin R</h5>
+              <p><small>CEO Founder</small></p>
+            </div>
+            <img src="{% static 'assets/images/lg_icons/quote-red.svg' %}" alt="quote" class="img-fluid align-self-start">
+          </div>
+          <div class="testimonial-text">
+            <p><em>Maecenas vitae porttitor neque, ac porttitor nunc. Duis venenatis lacinia libero. Nam nec augue ut nunc vulputate tincidunt at suscipit nunc.</em></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+{% endblock body %}

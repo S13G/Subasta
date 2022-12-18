@@ -1,0 +1,84 @@
+
+*{
+    box-sizing: border-box;
+    /* border: 1px solid black; */
+}
+a{
+    color: unset;
+    text-decoration: none;
+}
+
+
+.navbar-nav li a{
+    color: #000 !important;
+}
+li{
+    list-style: none;
+}
+.explore{
+    padding: 10px 20px !important;
+}
+.card-props{
+    background-image: url('../images/cars.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 15px;
+}
+.auction, .auction-photo img, .auction-time{
+    border-radius: 15px;
+
+}
+.auction-photo:hover{
+    transform: scale(1.05);
+    
+}
+.auction-photo{
+    transition-duration: 1.5;
+    transition-property: all;
+}
+.auction-time{
+    transform: translateY(-50%);
+    width: 65%;
+    position: relative;
+}
+
+
+.testimonial{
+    background: #fff;
+    box-shadow: 5px 2px 20px rgb(0 0 0 / 4%);
+}
+.test-desc img, .upcoming-author img{
+    border-radius: 50%;
+}
+.upcoming-timer div{
+    border: 1px solid white;
+    border-radius: 12px;
+    padding: 10px;
+    transform: scale(.9);
+}
+.upcoming-timer{
+    margin-top: -60px;
+    position: relative;
+}
+.upcoming-item{
+    border-radius: 15px;
+}
+.trustees{
+    background: rgba(249,57,95,.1);
+}
+.footer{
+    margin-top: 150px !important;
+}
+
+.signup-form, .login-form{
+    box-shadow: 5px 2px 20px rgb(0 0 0 / 4%);
+}
+
+.categories a{
+    border-radius: 10px;
+}
+.fa-naira-sign{
+    position: absolute;
+    margin-left: 20px;
+}
