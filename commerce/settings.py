@@ -12,25 +12,26 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-from decouple import config
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
 # Application definition
 
-DJANGO_APPS = [
+INSTALLED_APPS = [
+    'auctions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,26 +40,10 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-LOCAL_APPS = [
-    'auctions',
-    'users',
-]
-
-THIRD_PARTY_APPS = [
-    'jazzmin',
-    'cloudinary',
-    'debug_toolbar',
-    'sweetify',
-    'autoslug', # create automatic slug
-]
-
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -70,7 +55,7 @@ ROOT_URLCONF = 'commerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,18 +70,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'commerce.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DATABASE_DBNAME'),
-        'USER': config('DATABASE_USER'),
-        'HOST': 'localhost',
-        'PASSWORD': config('DATABASE_PASS')
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+AUTH_USER_MODEL = 'auctions.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -116,6 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -129,85 +115,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
 
-MEDIA_URL = '/media/'
+STATICFILES_DIR = [BASE_DIR / 'static']
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/')]
+MEDIA_URL = '/images/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
-
-# JAZZMIN
-
-JAZZMIN_SETTINGS = {
-    "site_title": "Subasta Admin",
-    "site_header": "Subasta",
-    "site_brand": "Subasta",
-    "copyright": "Subasta Auction Ltd",
-    "welcome_sign": "Welcome to Subasta Admin Section",
-    # "site_logo": "books/img/connecto.jpg",
-    # "login_icon": "books/img/connecto.jpg",
-    "show_ui_builder": False,
-
-    # Links to put along the top menu
-    "topmenu_links": [
-
-        # Url that gets reversed (Permissions can be added)
-        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-
-        # model admin to link to (Permissions checked against model)
-        # {"model": "accounts.User"},
-
-        # App with dropdown menu to all its models pages (Permissions checked against models)
-        {"app": "users"},
-        {"app": "auctions"},
-
-    ],
-
-    #############
-    # User Menu #
-    #############
-
-    # Additional links to include in the user menu on the top right ("app" url type is not allowed)
-    "usermenu_links": [
-        {"name": "Subasta Platform", "url": "/", "new_window": True},
-        {"model": "auth.user"}
-    ],
-
-    #############
-    # Side Menu #
-    #############
-
-    # Whether to display the side menu
-    "show_sidebar": True,
-
-    # Whether to aut expand the menu
-    "navigation_expanded": True,
-
-    # Hide these apps when generating side menu e.g (auth)
-    "hide_apps": [],
-
-    # Hide these models when generating side menu (e.g auth.user)
-    "hide_models": [],
-
-}
-
-JAZZMIN_UI_TWEAKS = {
-    "theme": "minty",
-    "body_small_text": True,
-    # "dark_mode_theme": "darkly",
-}
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# possible options: 'sweetalert', 'sweetalert2' - default is 'sweetalert2'
-SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
+MEDIA_ROOT = os.path.join(BASE_DIR / 'static/images')
