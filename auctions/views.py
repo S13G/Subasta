@@ -1,14 +1,16 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
 from auctions.models import User, AuctionItem, Category
 
 
+
 def home(request):
-    featured_items = AuctionItem.objects.all().order_by("-id")[:6:-1]
+    featured_items = AuctionItem.objects.select_related('category').order_by("-id").all()[:6:-1]
     context = {"featured_items": featured_items}
     return render(request, "index.html", context)
 
@@ -18,6 +20,17 @@ def all_auctions(request):
     items = AuctionItem.objects.all()
     context = {"categories": categories, "items": items}
     return render(request, "auctions/all-auctions.html", context)
+
+
+def category_view(request, slug):
+    categories = Category.objects.all()
+    try:
+        category = Category.objects.get(slug=slug)
+    except Category.DoesNotExist:
+        raise Http404()
+    items = category.items.all()
+    context = {"items": items, "category": category, "categories": categories}
+    return render(request, "auctions/auction-filter.html", context)
 
 
 def login_view(request):
@@ -31,18 +44,19 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            messages.success(request, "Logged in successfully")
+            return HttpResponseRedirect(reverse("home"))
         else:
-            return render(request, "auctions/login.html", {
-                "message": "Invalid username and/or password."
-            })
+            messages.error(request, "Error logging in")
+            return render(request, "auctions/login.html")
     else:
         return render(request, "auctions/login.html")
 
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    messages.info(request, "Successfully logged out")
+    return HttpResponseRedirect(reverse("home"))
 
 
 def register(request):
@@ -54,19 +68,18 @@ def register(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
-            return render(request, "auctions/register.html", {
-                "message": "Passwords must match."
-            })
+            messages.error(request, "Passwords don't match")
+            return render(request, "auctions/register.html")
 
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
-            return render(request, "auctions/register.html", {
-                "message": "Username already taken."
-            })
+            messages.info(request, "Username has already been taken")
+            return render(request, "auctions/register.html")
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        messages.success(request, "Logged in successfully")
+        return HttpResponseRedirect(reverse("home"))
     else:
         return render(request, "auctions/register.html")

@@ -13,6 +13,8 @@ class User(AbstractUser):
 class Category(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     name = models.CharField(max_length=255, null=True)
+    slug = AutoSlugField(populate_from="name", always_update=True, unique=True)
+    
 
     class Meta:
         verbose_name = "Category"
@@ -25,10 +27,10 @@ class Category(models.Model):
 class AuctionItem(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     name = models.CharField(max_length=255, null=True)
-    slug = AutoSlugField(populate_from="name", always_update=True, unique=True, null=True)
+    slug = AutoSlugField(populate_from="name", always_update=True, unique=True)
     image = models.ImageField(null=True, blank=True, default='default.jpg')
     image_url = models.URLField(max_length=300, null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, default=None)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, default=None, related_name="items")
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], null=True, default=0)
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0, null=True)
