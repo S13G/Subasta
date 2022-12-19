@@ -1,8 +1,8 @@
-{% extends 'main.html' %}
+{% extends 'templates/main.html' %}
 {% load static %}
 
-  <body>
-    {% block body %}
+<body>
+{% block body %}
     <!-- Header Section -->
     <div class="container-fluid bg-danger py-5 text-white">
         <div class="row pt-5">
@@ -10,26 +10,31 @@
                 <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">{{ category.name }}</h1>
 
                 <div class="">
-                  <button class="btn btn-primary px-3 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">Categories</button>
+                    <button class="btn btn-primary px-3 py-2" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+                        Categories
+                    </button>
                 </div>
 
 
-                <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-                  <div class="of  fcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Backdrop </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                  </div>
-                  <div class="offcanvas-body text-secondary">
-                    <h2 class="mb-3">Categories</h2>
-
-                    <!-- on click of any child item, it would filter based on context -->
-                    <div class="d-grid gap-1 text-center text-white categories">
-                      {% for category in categories %}
-                        <a class="my-2 mx-3 py-3 bg-secondary" data-bs-dismiss="offcanvas" aria-label="Close" href="{% url 'category-filter' category.slug %}"><h5>{{ category.name }}</h5></a>
-                      {% endfor %}
+                <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+                     aria-labelledby="offcanvasWithBothOptionsLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Backdrop </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
-                    
-                  </div>
+                    <div class="offcanvas-body text-secondary">
+                        <h2 class="mb-3">Categories</h2>
+
+                        <!-- on click of any child item, it would filter based on context -->
+                        <div class="d-grid gap-1 text-center text-white categories">
+                            {% for category in categories %}
+                                <a class="my-2 mx-3 py-3 bg-secondary" data-bs-dismiss="offcanvas" aria-label="Close"
+                                   onclick="window.location=`{% url 'category-filter' category.slug %}`"><h5>{{ category.name }}</h5></a>
+                            {% endfor %}
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,65 +42,66 @@
 
     <!-- Live Auction -->
     <div class="container-fluid">
+        <div class="row mx-md-3 mb-5 p-md-3">
+            <!-- i think if you are gonna have multiple items, continuous html blocks would be unhealthy, so you can use whater=ver function you have under your sleeves to replicate one column from  -->
+            <!-- Here ...Start -->
+            {% for item in items %}
+                <div class="col-12 col-md-6 col-lg-4 p-3 auction-card  text-center">
+                    <div class=" p-3 auction border border-outline-1">
+                        <a href="./auction-detail.html">
+                            <div class="auction-photo">
+                                <img src="{{ item.image_url }}" alt="auction-1" class="img-fluid">
+                                <p class="fw-bold auction-time text-danger bg-white m-0 p-3 mx-auto">{{ item.name }}</p>
+                            </div>
+                        </a>
+                        <div class="auction-details">
+                            <h3 class="text-start fs-4">{{ item.description|slice:"30" }}<span
+                                    style="color: red;">...</span></h3>
+                            <div class="auctioner my-3 d-flex justify-content-between">
+                                <div class="user d-flex align-items-center">
+                                    <img src="{% static 'assets/images/auction-authr1.png' %}" alt="auction author"
+                                         class="img-fluid me-3">
+                                    <p class="">By {{ item.listed_by }}</p>
+                                </div>
 
-
-      <div class="row mx-md-3 mb-5 p-md-3">
-        <!-- i think if you are gonna have multiple items, continous html blocks would be unhealthy, so you can use whater=ver function you have under your sleeves to replicate one column from  -->
-        <!-- Here ...Start -->
-      {% for item in items %}
-          <div class="col-12 col-md-6 col-lg-4 p-3 auction-card  text-center">
-            <div class=" p-3 auction border border-outline-1">
-              <a href="./auction-detail.html">
-                <div class="auction-photo">
-                    <img src="{{ item.image_url }}" alt="auction-1" class="img-fluid">
-                  <p class="fw-bold auction-time text-danger bg-white m-0 p-3 mx-auto">{{ item.name }}</p>
-                </div>
-              </a>
-              <div class="auction-details">
-                <h3 class="text-start fs-4">{{ item.description|slice:"30" }}<span style="color: red;">...</span></h3>
-                <div class="auctioner my-3 d-flex justify-content-between">
-                  <div class="user d-flex align-items-center">
-                    <img src="{% static 'assets/images/auction-authr1.png' %}" alt="auction author" class="img-fluid me-3">
-                    <p class="">By {{ item.listed_by }}</p>
-                  </div>
-    
-                  <h4 class="text-danger">${{ item.price }}</h4>
-                </div>
-                <div class="auction-action d-flex align-items-center justify-content-start">
-                  <div class="cta text-start d-grid me-auto">
-                    <button class="btn btn-md btn-danger mb-3">Place a Bid</button>
-                    <a>
-                      <button class="btn btn-md btn-danger mb-3" id="liveToastBtn">
-                        Add to Watchlist
-                      </button>
-                    </a>
-                  </div>
-                  <div class="action-btns justify-content-between ms-auto">
-                    <div class="dropdown">
-                      <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-2x  fa-solid fa-ellipsis-v"></i>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">Don't see this product</a></li>
-                        <li><a class="dropdown-item" href="#">Report Product</a></li>
-                        <li><a class="dropdown-item" href="#">Claim product rights</a></li>
-                      </ul>
+                                <h4 class="text-danger">${{ item.price }}</h4>
+                            </div>
+                            <div class="auction-action d-flex align-items-center justify-content-start">
+                                <div class="cta text-start d-grid me-auto">
+                                    <button class="btn btn-md btn-danger mb-3">Place a Bid</button>
+                                    <a>
+                                        <button class="btn btn-md btn-danger mb-3" id="liveToastBtn">
+                                            Add to Watchlist
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="action-btns justify-content-between ms-auto">
+                                    <div class="dropdown">
+                                        <button class="btn" type="button" id="dropdownMenuButton1"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-2x  fa-solid fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="#">Don't see this product</a></li>
+                                            <li><a class="dropdown-item" href="#">Report Product</a></li>
+                                            <li><a class="dropdown-item" href="#">Claim product rights</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          {% empty %}
-          <h4 class="text-danger fw-bold">No item under this category</h4>
+            {% empty %}
+                <h4 class="text-danger fw-bold">No item under this category</h4>
 
-        <!-- To Here ...Stop... then you can delete these from below... be sure to collapse the blocks to have a better view -->
-        
-      {% endfor %}
+                <!-- To Here ...Stop... then you can delete these from below... be sure to collapse the blocks to have a better view -->
 
-      </div>
+            {% endfor %}
+
+        </div>
     </div>
 
-    {% endblock body %}
-    </body>
+{% endblock body %}
+</body>
 </html>

@@ -8,11 +8,10 @@ from django.urls import reverse
 from auctions.models import User, AuctionItem, Category
 
 
-
 def home(request):
     featured_items = AuctionItem.objects.select_related('category').order_by("-id").all()[:6:-1]
     context = {"featured_items": featured_items}
-    return render(request, "index.html", context)
+    return render(request, "templates/index.html", context)
 
 
 def all_auctions(request):
@@ -25,7 +24,7 @@ def all_auctions(request):
 def category_view(request, slug):
     categories = Category.objects.all()
     try:
-        category = Category.objects.get(slug=slug)
+        category = categories.get(slug=slug)
     except Category.DoesNotExist:
         raise Http404()
     items = category.items.all()
