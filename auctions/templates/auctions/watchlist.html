@@ -1,41 +1,11 @@
 {% extends 'templates/main.html' %}
-{% load static %}
 
-<body>
 {% block body %}
     <!-- Header Section -->
     <div class="container-fluid bg-danger py-5 text-white">
         <div class="row pt-5">
-            <div class="col-12 col-lg-10 d-grid gap-3 d-md-flex justify-content-between align-items-center">
-                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Active Listings</h1>
-
-                <div class="">
-                    <button class="btn btn-primary px-3 py-2" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-                        Categories
-                    </button>
-                </div>
-
-
-                <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
-                     aria-labelledby="offcanvasWithBothOptionsLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Backdrop </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body text-secondary">
-                        <h2 class="mb-3">Categories</h2>
-
-                        <!-- on click of any child item, it would filter based on context -->
-                        <div class="d-grid gap-1 text-center text-white categories">
-                            {% for category in categories %}
-                                <a class="my-2 mx-3 py-3 bg-secondary" data-bs-dismiss="offcanvas" aria-label="Close"
-                                   onclick="window.location=`{% url 'category-filter' category.slug %}`"><h5>{{ category.name }}</h5></a>
-                            {% endfor %}
-                        </div>
-
-                    </div>
-                </div>
+            <div class="col-12 col-lg-10">
+                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">My Watchlist</h1>
             </div>
         </div>
     </div>
@@ -43,8 +13,7 @@
     <!-- Live Auction -->
     <div class="container-fluid">
 
-
-        <div class="row mx-md-3 mb-5 p-md-3">
+        <div class="row mx-md-2 mb-5 p-md-3">
             <!-- i think if you are gonna have multiple items, continous html blocks would be unhealthy, so you can use whater=ver function you have under your sleeves to replicate one column from  -->
             <!-- Here ...Start -->
             {% for item in items %}
@@ -61,23 +30,22 @@
                                     style="color: red;">...</span></h3>
                             <div class="auctioner my-3 d-flex justify-content-between">
                                 <div class="user d-flex align-items-center">
-                                    <img src="{% static 'assets/images/auction-authr1.png' %}" alt="auction author"
+                                    <img src="./assets/images/auction-authr1.png" alt="auction author"
                                          class="img-fluid me-3">
-                                    <p class="">By {{ item.listed_by }}</p>
+                                    <p class="">By {{ item.listed_by_id }}</p>
                                 </div>
 
                                 <h4 class="text-danger">${{ item.price }}</h4>
                             </div>
-                            <div class="auction-action d-flex align-items-center justify-content-start">
-                                <div class="cta text-start d-grid me-auto">
-                                    <button class="btn btn-md btn-danger mb-3">Place a Bid</button>
-                                    <a>
-                                        <button class="btn btn-md btn-danger mb-3" id="liveToastBtn">
-                                            Add to Watchlist
-                                        </button>
-                                    </a>
+                            <div class="auction-action d-flex align-items-center justify-content-between">
+
+                                <div class="cta text-start d-grid gap-3">
+
+                                    <button class="btn btn-md btn-danger">Place a Bid</button>
+                                    <button class="btn btn-md btn-danger">Remove from Watchlist</button>
                                 </div>
-                                <div class="action-btns justify-content-between ms-auto">
+
+                                <div class="action-btns justify-content-between">
                                     <div class="dropdown">
                                         <button class="btn" type="button" id="dropdownMenuButton1"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -94,14 +62,11 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- To Here ...Stop... then you can delete these from below... be sure to collapse the blocks to have a better view -->
-
             {% endfor %}
+            <!-- To Here ...Stop... then you can delete these from below... be sure to collapse the blocks to have a better view -->
+
+            <!-- delete to here -->
 
         </div>
     </div>
-
 {% endblock body %}
-</body>
-</html>

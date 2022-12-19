@@ -1,7 +1,6 @@
 {% extends 'templates/main.html' %}
 {% load static %}
 
-<body>
 {% block body %}
     <!-- Header Section -->
     <div class="container-fluid bg-danger py-5 text-white">
@@ -48,7 +47,7 @@
             {% for item in items %}
                 <div class="col-12 col-md-6 col-lg-4 p-3 auction-card  text-center">
                     <div class=" p-3 auction border border-outline-1">
-                        <a href="./auction-detail.html">
+                        <a href="{% url 'item-details' item.slug %}">
                             <div class="auction-photo">
                                 <img src="{{ item.image_url }}" alt="auction-1" class="img-fluid">
                                 <p class="fw-bold auction-time text-danger bg-white m-0 p-3 mx-auto">{{ item.name }}</p>
@@ -103,5 +102,3 @@
     </div>
 
 {% endblock body %}
-</body>
-</html>

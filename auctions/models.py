@@ -1,9 +1,9 @@
+import uuid
+
+from autoslug import AutoSlugField
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
-from autoslug import AutoSlugField
-
-import uuid
 
 
 class User(AbstractUser):
@@ -14,7 +14,6 @@ class Category(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", always_update=True, unique=True)
-    
 
     class Meta:
         verbose_name = "Category"
@@ -23,7 +22,7 @@ class Category(models.Model):
     def __str__(self):
         return str(self.name)
 
-    
+
 class AuctionItem(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     name = models.CharField(max_length=255, null=True)
@@ -32,8 +31,10 @@ class AuctionItem(models.Model):
     image_url = models.URLField(max_length=300, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, default=None, related_name="items")
     description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], null=True, default=0)
-    starting_bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], null=True,
+                                default=0)
+    starting_bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0,
+                                       null=True)
     listed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="item")
     watchlist = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -42,17 +43,16 @@ class AuctionItem(models.Model):
         verbose_name = "Auction Item"
         verbose_name_plural = "Auction Items"
         ordering = ["-created", "name"]
-    
+
     def __str__(self):
         return str(self.name)
-    
+
     def image_url(self):
         try:
             url = self.image.url
         except:
             url = ''
         return url
-    
 
 
 class AuctionBid(models.Model):
