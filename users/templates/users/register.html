@@ -1,0 +1,72 @@
+{% extends 'templates/main.html' %}
+
+{% block body %}
+    <!-- Header Section -->
+    <div class="container-fluid bg-danger py-5 text-white">
+        <div class="row pt-5">
+            <div class="col-12 col-lg-10">
+                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Sign Up</h1>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="container">
+            <div class="row py-5 justify-content-center">
+                <div class="col-10 col-md-6 signup-form px-5 py-2">
+                    <div class="form-head text-center mb-5">
+                        <h3>Sign Up</h3>
+                        <p>Do you already have an account? <a class="fw-bold text-danger" href="{% url 'login' %}">Log
+                            In Here!</a></p>
+                    </div>
+                    <div class="form-body">
+                        <form action="#" class="" method="post">
+                            {% csrf_token %}
+                            <div class="vstack gap-3 m-0 p-0">
+                                <div class="names d-grid gap-4">
+
+                                    <div class="">
+                                    <span>
+                                        <label for="lastname">Username*</label>
+                                        <input type="text" name="username" placeholder="Username" id="lastName" class="form-control">
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="">
+                                <span>
+                                    <label for="lastname">Your Email Address*</label>
+                                    <input type="text" name="email" placeholder="Email address" id="lastName" class="form-control">
+                                </span>
+                                </div>
+                                <div class="">
+                                <span>
+                                    <label for="lastname">Password*</label>
+                                    <input type="password" name="password" placeholder="Password" id="lastName" class="form-control">
+                                </span>
+                                </div>
+                                <div class="">
+                                <span>
+                                    <label for="lastname">Confirm Password*</label>
+                                    <input type="password" name="confirmation" placeholder="Confirm Password" id="lastName" class="form-control">
+                                </span>
+                                </div>
+                                <div class="">
+                                <span>
+                                    <p class="d-flex gap-3 align-items-center">
+                                        <input type="checkbox" name="termsApply" id="termsApply">
+                                        I agree to the Terms & Policy
+                                    </p>
+                                </span>
+                                </div>
+                                <div class="">
+                                <span>
+                                    <button type="submit" class="w-100 btn btn-danger mt-1">Sign Up</button>
+                                </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock body %}

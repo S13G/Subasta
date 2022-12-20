@@ -1,13 +1,9 @@
 import uuid
 
 from autoslug import AutoSlugField
-from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
-
-
-class User(AbstractUser):
-    pass
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -35,7 +31,7 @@ class AuctionItem(models.Model):
                                 default=0)
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0,
                                        null=True)
-    listed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="item")
+    listed_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name="item")
     watchlist = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -58,7 +54,7 @@ class AuctionItem(models.Model):
 class AuctionBid(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     item = models.ForeignKey(AuctionItem, related_name='bid', on_delete=models.CASCADE)
-    bidder = models.ForeignKey(User, related_name='bidded_item', on_delete=models.CASCADE)
+    bidder = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='bidded_item', on_delete=models.CASCADE)
     bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0, null=True)
     created = models.DateTimeField(auto_now_add=True)
 

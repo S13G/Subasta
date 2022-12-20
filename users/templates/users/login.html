@@ -1,0 +1,50 @@
+{% extends 'templates/main.html' %}
+{% load static %}
+
+{% block body %}
+    <!-- Header Section -->
+    <div class="container-fluid bg-danger py-5 text-white">
+        <div class="row pt-5">
+            <div class="col-12 col-lg-10">
+                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Log In</h1>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="container">
+            <div class="row py-5 justify-content-center">
+                <div class="col-10 col-md-6 signup-form px-5 py-2">
+                    <div class="form-head text-center mb-5">
+                        <h3>Get Logged In</h3>
+                        <p>Don't have an account? <a class="fw-bold text-danger" href="{% url 'register' %}">Sign up
+                            Here!</a></p>
+                    </div>
+                    <div class="form-body">
+                        <form action="{% url 'login' %}" class="" method="post">
+                            {% csrf_token %}
+                            <div class="vstack gap-3 m-0 p-0">
+                                <div class="">
+                                <span>
+                                    <label for="lastname">Username*</label>
+                                    <input type="text" name="username" placeholder="Username" id="lastName" class="form-control">
+                                </span>
+                                </div>
+                                <div class="">
+                                <span>
+                                    <label for="lastname">Password*</label>
+                                    <input type="password" name="password" placeholder="Password" id="lastName" class="form-control">
+                                </span>
+                                </div>
+                                <div class="">
+                                <span>
+                                    <button type="submit" class="w-100 btn btn-success mt-1">Login</button>
+                                </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock body %}
