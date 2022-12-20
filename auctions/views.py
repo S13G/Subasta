@@ -34,11 +34,7 @@ def category_view(request, slug):
 # @login_required('login')
 def item_details(request, slug):
     item = AuctionItem.objects.get(slug=slug)
-    watchlist_items = AuctionItem.objects.filter(watchlist=True).distinct()[:3:-1]
-    # TODO
-    # turn the watchlist_items into a values list(flat=true) iterate over the list checking
-    # if the item is already in the list, if it is then remove the item from the list,
-    # this could be a property or a logic in the view
+    watchlist_items = AuctionItem.objects.filter(watchlist=True).exclude(id=item.id).distinct()[:3:-1]
     random.shuffle(watchlist_items)
     context = {"item": item, "watchlist_items": watchlist_items}
     return render(request, "auctions/auction-detail.html", context)
