@@ -30,7 +30,8 @@
                         <div class="d-grid gap-1 text-center text-white categories">
                             {% for category in categories %}
                                 <a class="my-2 mx-3 py-3 bg-secondary" data-bs-dismiss="offcanvas" aria-label="Close"
-                                   onclick="window.location=`{% url 'category-filter' category.slug %}`"><h5>{{ category.name }}</h5></a>
+                                   onclick="window.location=`{% url 'category-filter' category.slug %}`">
+                                    <h5>{{ category.name }}</h5></a>
                             {% endfor %}
                         </div>
 
@@ -45,7 +46,8 @@
 
 
         <div class="row mx-md-3 mb-5 p-md-3">
-            <!-- i think if you are gonna have multiple items, continous html blocks would be unhealthy, so you can use whater=ver function you have under your sleeves to replicate one column from  -->
+            <!-- i think if you are gonna have multiple items, continuous html blocks would be unhealthy, so you can use whatever
+                    function you have under your sleeves to replicate one column from  -->
             <!-- Here ...Start -->
             {% for item in items %}
                 <div class="col-12 col-md-6 col-lg-4 p-3 auction-card  text-center">

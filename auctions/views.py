@@ -8,6 +8,7 @@ from auctions.models import AuctionItem, Category
 
 
 def home(request):
+    # selects and displays 6 random items on the main page
     featured_items = list(AuctionItem.objects.select_related('category').order_by("-id").all())
     featured_items = random.sample(featured_items, 6)
     context = {"featured_items": featured_items}
@@ -35,6 +36,7 @@ def category_view(request, slug):
 # @login_required('login')
 def item_details(request, slug):
     item = AuctionItem.objects.get(slug=slug)
+    # selects and displays 3 random watchlist items on the detail page
     watchlist_items = list(AuctionItem.objects.filter(watchlist=True).exclude(id=item.id))
     watchlist_items = random.sample(watchlist_items, 3)
     context = {"item": item, "watchlist_items": watchlist_items}

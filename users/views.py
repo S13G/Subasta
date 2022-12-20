@@ -36,8 +36,10 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("home"))
 
 
-def register(request):
+def register(request, **extra_fields):
     if request.method == "POST":
+        first_name = request.POST["first-name"]
+        last_name = request.POST["last-name"]
         username = request.POST["username"]
         email = request.POST["email"]
 
@@ -50,7 +52,9 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password)
+            # adding first name and last name using extra_fields to the User fields
+            extra_fields = {**extra_fields, "first_name": first_name, "last_name": last_name}
+            user = User.objects.create_user(username, email, password, **extra_fields)
             user.save()
         except IntegrityError:
             messages.info(request, "Username has already been taken")
