@@ -1,14 +1,14 @@
+import random
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
 from auctions.models import User, AuctionItem, Category
-
-import random
 
 
 def home(request):
@@ -39,6 +39,10 @@ def category_view(request, slug):
 def item_details(request, slug):
     item = AuctionItem.objects.get(slug=slug)
     watchlist_items = AuctionItem.objects.filter(watchlist=True).distinct()[:3:-1]
+    # TODO
+    # turn the watchlist_items into a values list(flat=true) iterate over the list checking
+    # if the item is already in the list, if it is then remove the item from the list,
+    # this could be a property or a logic in the view
     random.shuffle(watchlist_items)
     context = {"item": item, "watchlist_items": watchlist_items}
     return render(request, "auctions/auction-detail.html", context)
@@ -71,7 +75,6 @@ def login_view(request):
         return render(request, "auctions/login.html")
 
 
-# @login_required('login')
 def logout_view(request):
     logout(request)
     messages.info(request, "Successfully logged out")
