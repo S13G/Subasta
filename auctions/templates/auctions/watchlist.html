@@ -33,7 +33,7 @@
                                     <div class="user d-flex align-items-center">
                                         <img src="{% static 'assets/images/auction-authr1.png' %}" alt="auction author"
                                              class="img-fluid me-3">
-                                        <p class="">By {{ item.listed_by.first_name }}</p>
+                                        <p class="">By {{ item.listed_by.first_name.capitalize }} {{ item.listed_by.last_name.capitalize }}</p>
                                     </div>
 
                                     <h4 class="text-danger">${{ item.price }}</h4>

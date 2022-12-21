@@ -13,7 +13,8 @@ def home(request):
     # selects and displays 6 random items on the main page
     featured_items = list(AuctionItem.objects.select_related('category').order_by("-id").all())
     featured_items = random.sample(featured_items, 6)
-    return render(request, "templates/index.html")
+    context = {"featured_items": featured_items}
+    return render(request, "templates/index.html", context)
 
 
 def all_auctions(request):
