@@ -21,6 +21,7 @@
                 <div class="auction-detail">
                     <h4 class="fw-bold">{{ item.name }}</h4>
                     <p>{{ item.description|linebreaksbr }}</p>
+                    <p>Listed by: {{ item.listed_by.last_name.capitalize }}</p>
                     <p class="fs-5">Current Price: <span class="bidding-price text-danger">${{ item.price }}</span></p>
                     <p class="fs-5">Bidding Price: <span
                             class="bidding-price text-danger">${{ item.starting_bid }}</span></p>

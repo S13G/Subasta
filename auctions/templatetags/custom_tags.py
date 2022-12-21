@@ -1,11 +1,11 @@
 from django import template
 
-from auctions.models import AuctionItem
-
 register = template.Library()
 
 
 @register.simple_tag
-def watchlist_count():
-    watchlist_item_count = AuctionItem.objects.filter(watchlist=True).count()
+def watchlist_count(request):
+    # access user by passing request as a parameter and as argument in the template
+    owner = request.user
+    watchlist_item_count = owner.item.filter(watchlist=True).count()
     return watchlist_item_count

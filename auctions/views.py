@@ -1,20 +1,19 @@
 import random
 
 from django.contrib import messages
-# from django.contrib.auth.decorators import login_required
-from django.http import Http404,HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, reverse
 
-from auctions.models import AuctionItem, Category
 from auctions.forms import AuctionForm
+from auctions.models import AuctionItem, Category
 
 
 def home(request):
     # selects and displays 6 random items on the main page
     featured_items = list(AuctionItem.objects.select_related('category').order_by("-id").all())
     featured_items = random.sample(featured_items, 6)
-    context = {"featured_items": featured_items}
-    return render(request, "templates/index.html", context)
+    return render(request, "templates/index.html")
 
 
 def all_auctions(request):
@@ -35,7 +34,7 @@ def category_view(request, slug):
     return render(request, "auctions/auction-filter.html", context)
 
 
-# @login_required('login')
+@login_required(login_url="login")
 def item_details(request, slug):
     item = AuctionItem.objects.get(slug=slug)
     # selects and displays 3 random watchlist items on the detail page
@@ -45,16 +44,17 @@ def item_details(request, slug):
     return render(request, "auctions/auction-detail.html", context)
 
 
-# @login_required('login')
+@login_required(login_url="login")
 def watchlist_item(request):
-    items = AuctionItem.objects.filter(watchlist=True)
-    context = {"items": items}
+    owner = request.user
+    items = owner.item.filter(watchlist=True)
+    context = {"items": items, "owner": owner}
     return render(request, "auctions/watchlist.html", context)
 
 
+@login_required(login_url="login")
 def create_listing(request):
     owner = request.user
-    form = AuctionForm()
 
     if request.method == "POST":
         form = AuctionForm(request.POST, request.FILES)
@@ -63,10 +63,11 @@ def create_listing(request):
             auction_item.listed_by = owner
             auction_item.save()
 
-            messages.success(request, "Item has been added successfully")
+            messages.success(request, "Item {} has been added successfully".format(auction_item.name))
+
             return HttpResponseRedirect(reverse('listings'))
-        else:
-            messages.error(request, "Error adding item")
-            form = AuctionForm()
-    context = {"form": form}
-    return render(request, "auctions/create-listing.html", context)
+        messages.error(request, "Error adding item")
+        return render(request, "auctions/create-listing.html", {"form": form})
+    else:
+        form = AuctionForm()
+        return render(request, "auctions/create-listing.html", {"form": form})
