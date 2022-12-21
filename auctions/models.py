@@ -24,7 +24,7 @@ class AuctionItem(models.Model):
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", always_update=True, unique=True)
     image = models.ImageField(null=True, blank=True, default='default.jpg')
-    image_url = models.URLField(max_length=300, null=True, blank=True)
+    image_url = models.CharField(max_length=300, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, default=None, related_name="items")
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], null=True,

@@ -1,0 +1,33 @@
+{% extends 'templates/main.html' %}
+
+{% block body %}
+    <!-- Header Section -->
+    <div class="container-fluid bg-danger py-5 text-white">
+        <div class="row pt-5">
+            <div class="col-12 col-lg-10">
+                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Create a Listing</h1>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="container">
+            <form action="#" id="createListing" class="w-100 row py-5" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="auctionImage" class="form-label fs-4">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+
+                <div class="col-12 mt-5 text-center">
+                    <a href="{% url 'listings' %}">
+                        <button type="submit" class="btn btn-lg btn-success btn-primary">Create Listing</button>
+                    </a>
+                </div>
+
+
+            </form>
+        </div>
+    </main>
+{% endblock body %}

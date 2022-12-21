@@ -45,11 +45,11 @@
                         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="{% url 'watchlist_items' %}">Watch List <span
+                        <a class="nav-link" href="{% url 'watchlist-items' %}">Watch List <span
                                 style="color: red;">{% watchlist_count %}</span></a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="./additem.html">Create Listing</a>
+                        <a class="nav-link" href="{% url 'create-listings' %}">Create Listing</a>
                     </li>
 
 

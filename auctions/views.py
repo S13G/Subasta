@@ -1,10 +1,12 @@
 import random
 
+from django.contrib import messages
 # from django.contrib.auth.decorators import login_required
-from django.http import Http404
-from django.shortcuts import render
+from django.http import Http404,HttpResponseRedirect
+from django.shortcuts import render, reverse
 
 from auctions.models import AuctionItem, Category
+from auctions.forms import AuctionForm
 
 
 def home(request):
@@ -48,3 +50,23 @@ def watchlist_item(request):
     items = AuctionItem.objects.filter(watchlist=True)
     context = {"items": items}
     return render(request, "auctions/watchlist.html", context)
+
+
+def create_listing(request):
+    owner = request.user
+    form = AuctionForm()
+
+    if request.method == "POST":
+        form = AuctionForm(request.POST, request.FILES)
+        if form.is_valid():
+            auction_item = form.save(commit=False)
+            auction_item.listed_by = owner
+            auction_item.save()
+
+            messages.success(request, "Item has been added successfully")
+            return HttpResponseRedirect(reverse('listings'))
+        else:
+            messages.error(request, "Error adding item")
+            form = AuctionForm()
+    context = {"form": form}
+    return render(request, "auctions/create-listing.html", context)

@@ -7,5 +7,6 @@ urlpatterns = [
     path("listings/", views.all_auctions, name="listings"),
     path("listings/<slug:slug>/", views.category_view, name="category-filter"),
     path("listings/item/<slug:slug>", views.item_details, name="item-details"),
-    path("watchlist/", views.watchlist_item, name="watchlist_items"),
+    path("watchlist/", views.watchlist_item, name="watchlist-items"),
+    path("create-listing/", views.create_listing, name="create-listings")
 ]
