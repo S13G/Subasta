@@ -26,7 +26,7 @@ class AuctionItem(models.Model):
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", always_update=True, unique=True)
     image = models.ImageField(null=True, blank=True, default='default.jpg')
-    image_url = models.URLField(max_length=300, null=True, blank=True)
+    image_link = models.URLField(max_length=300, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, default=None, related_name="items")
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], null=True,
@@ -34,7 +34,6 @@ class AuctionItem(models.Model):
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0,
                                        null=True)
     listed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="item")
-    watchlist = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -51,6 +50,14 @@ class AuctionItem(models.Model):
         except IntegrityError:
             url = ''
         return url
+
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="watchlists")
+    item = models.ForeignKey(AuctionItem, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"{self.user} -- {self.item}"
 
 
 class AuctionBid(models.Model):

@@ -19,7 +19,6 @@ class AuctionForm(ModelForm):
             "description": "Item Description",
             "price": "Current price",
             "starting_bid": "Bidding price",
-            "watchlist": "Add to watchlist",
         }
 
     # adding styles to the form by adding the css class to be modified
@@ -28,4 +27,3 @@ class AuctionForm(ModelForm):
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control form-label'})
-            self.fields['watchlist'].widget.attrs.update({'class': 'form-check form-check-input'})

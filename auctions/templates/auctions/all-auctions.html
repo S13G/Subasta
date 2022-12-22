@@ -65,19 +65,17 @@
                                 <div class="user d-flex align-items-center">
                                     <img src="{% static 'assets/images/auction-authr1.png' %}" alt="auction author"
                                          class="img-fluid me-3">
-                                    <p class="">By {{ item.listed_by.first_name.capitalize }} {{ item.listed_by.last_name.capitalize }}</p>
+                                    <p class="">
+                                        By {{ item.listed_by.first_name.capitalize }} {{ item.listed_by.last_name.capitalize }}</p>
                                 </div>
 
                                 <h4 class="text-danger">${{ item.price }}</h4>
                             </div>
                             <div class="auction-action d-flex align-items-center justify-content-start">
                                 <div class="cta text-start d-grid me-auto">
-                                    <button class="btn btn-md btn-danger mb-3">Place a Bid</button>
-                                    <a>
-                                        <button class="btn btn-md btn-danger mb-3" id="liveToastBtn">
-                                            Add to Watchlist
-                                        </button>
-                                    </a>
+                                    <input type="submit" name="place-bid" class="btn btn-md btn-danger mb-3"
+                                           value="Place a Bid">
+                                    <a href="{% url  %}" class="btn btn-md btn-danger mb-3" id="liveToastBtn">Add to Watchlist</a>
                                 </div>
                                 <div class="action-btns justify-content-between ms-auto">
                                     <div class="dropdown">

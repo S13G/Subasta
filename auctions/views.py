@@ -3,10 +3,10 @@ import random
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, get_object_or_404
 
 from auctions.forms import AuctionForm
-from auctions.models import AuctionItem, Category
+from auctions.models import AuctionItem, Category, Watchlist
 
 
 def home(request):
@@ -48,9 +48,16 @@ def item_details(request, slug):
 @login_required(login_url="login")
 def watchlist_item(request):
     owner = request.user
-    items = owner.item.filter(watchlist=True)
-    context = {"items": items, "owner": owner}
+    watchlist_items = Watchlist.objects.filter(user=owner)
+    context = {"watchlist_items": watchlist_items, "owner": owner}
     return render(request, "auctions/watchlist.html", context)
+
+
+@login_required(login_url="login")
+def add_to_watchlist(request, item_id):
+    item = get_object_or_404(AuctionItem, id=item_id)
+    if
+    return HttpResponseRedirect(reverse('watchlist-items'))
 
 
 @login_required(login_url="login")

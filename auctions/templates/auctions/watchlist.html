@@ -13,30 +13,30 @@
 
     <!-- Live Auction -->
     <div class="container-fluid">
-        {% if items %}
+        {% if watchlist_items %}
             <div class="row mx-md-2 mb-5 p-md-3">
                 <!-- i think if you are gonna have multiple items, continous html blocks would be unhealthy, so you can use whater=ver function you have under your sleeves to replicate one column from  -->
                 <!-- Here ...Start -->
-                {% for item in items %}
+                {% for watchlist_item in watchlist_items %}
                     <div class="col-12 col-md-6 col-lg-4 p-3 auction-card  text-center">
                         <div class=" p-3 auction border border-outline-1">
-                            <a href="{% url 'item-details' item.slug %}">
+                            <a href="{% url 'item-details' watchlist_item.item.slug %}">
                                 <div class="auction-photo">
-                                    <img src="{{ item.image_url }}" alt="auction-1" class="img-fluid">
-                                    <p class="fw-bold auction-time text-danger bg-white m-0 p-3 mx-auto">{{ item.name }}</p>
+                                    <img src="{{ watchlist_item.item.image_url }}" alt="auction-1" class="img-fluid">
+                                    <p class="fw-bold auction-time text-danger bg-white m-0 p-3 mx-auto">{{ watchlist_item.item.name }}</p>
                                 </div>
                             </a>
                             <div class="auction-details">
-                                <h3 class="text-start fs-4">{{ item.description|slice:"30" }}<span
+                                <h3 class="text-start fs-4">{{ watchlist_item.item.description|slice:"30" }}<span
                                         style="color: red;">...</span></h3>
                                 <div class="auctioner my-3 d-flex justify-content-between">
                                     <div class="user d-flex align-items-center">
                                         <img src="{% static 'assets/images/auction-authr1.png' %}" alt="auction author"
                                              class="img-fluid me-3">
-                                        <p class="">By {{ item.listed_by.first_name.capitalize }} {{ item.listed_by.last_name.capitalize }}</p>
+                                        <p class="">By {{ watchlist_item.item.listed_by.first_name.capitalize }} {{ watchlist_item.item.listed_by.last_name.capitalize }}</p>
                                     </div>
 
-                                    <h4 class="text-danger">${{ item.price }}</h4>
+                                    <h4 class="text-danger">${{ watchlist_item.item.price }}</h4>
                                 </div>
                                 <div class="auction-action d-flex align-items-center justify-content-between">
 
