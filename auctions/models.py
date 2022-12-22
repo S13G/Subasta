@@ -2,7 +2,8 @@ import uuid
 
 from autoslug import AutoSlugField
 from django.core.validators import MinValueValidator
-from django.db import models
+from django.db import models, IntegrityError
+
 
 from users.models import User
 
@@ -47,7 +48,7 @@ class AuctionItem(models.Model):
     def image_url(self):
         try:
             url = self.image.url
-        except:
+        except IntegrityError:
             url = ''
         return url
 
