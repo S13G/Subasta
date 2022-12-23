@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from auctions.models import AuctionItem
+from auctions.models import AuctionItem, AuctionBid
 
 
 # Create forms
@@ -27,3 +27,18 @@ class AuctionForm(ModelForm):
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control form-label'})
+
+
+class BidForm(ModelForm):
+    class Meta:
+        model = AuctionBid
+        fields = "__all__"
+        labels = {
+            "bid": "Bid Amount:",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(BidForm, self).__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control', 'name': 'number'})
