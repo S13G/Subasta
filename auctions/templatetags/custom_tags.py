@@ -1,4 +1,5 @@
 from django import template
+
 from auctions.models import Watchlist
 
 register = template.Library()
@@ -10,3 +11,12 @@ def watchlist_count(request):
     owner = request.user
     watchlist_item_count = Watchlist.objects.filter(user=owner).count()
     return watchlist_item_count
+
+
+@register.filter
+def check_watchlist_item_existence(item, request):
+    item = Watchlist.objects.filter(item=item, user=request.user)
+    print(item)
+    if item.exists():
+        return True
+    return False

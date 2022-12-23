@@ -1,4 +1,5 @@
 {% extends 'templates/main.html' %}
+{% load custom_tags %}
 {% load static %}
 
 <body>
@@ -75,7 +76,9 @@
                                 <div class="cta text-start d-grid me-auto">
                                     <input type="submit" name="place-bid" class="btn btn-md btn-danger mb-3"
                                            value="Place a Bid">
-                                    <a href="{% url  %}" class="btn btn-md btn-danger mb-3" id="liveToastBtn">Add to Watchlist</a>
+                                    {% if not item|check_watchlist_item_existence:request %}
+                                        <a href="{% url 'add-to-watchlist' item.id %}" class="btn btn-md btn-danger mb-3" id="liveToastBtn">Add to Watchlist</a>
+                                    {% endif %}
                                 </div>
                                 <div class="action-btns justify-content-between ms-auto">
                                     <div class="dropdown">

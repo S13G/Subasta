@@ -82,19 +82,19 @@
                     </div>
 
                     <!-- other watchlist items to be iterated over -->
-                    {% for item in watchlist_items %}
+                    {% for watchlist_item in watchlist_items %}
                         <div class="col-12 col-md-6 col-lg-4 auction-card mb-3 text-start">
-                            <a href="{% url 'item-details' item.slug %}">
+                            <a href="{% url 'item-details' watchlist_item.item.slug %}">
                                 <div class=" p-2 auction border border-outline-1">
                                     <div class="auction-photo text-center mb-3">
-                                        <img src="{{ item.image_url }}" alt="auction-1"
+                                        <img src="{{ watchlist_item.item.image_url }}" alt="auction-1"
                                              class="img-fluid">
                                     </div>
                                     <div class="auction-details">
-                                        <p class="text-start fs-5">{{ item.name }}</p>
+                                        <p class="text-start fs-5">{{ watchlist_item.item.name }}</p>
 
                                         <div class="auctioner mt-3">
-                                            <h5 class="text-danger">${{ item.price }}</h5>
+                                            <h5 class="text-danger">${{ watchlist_item.item.price }}</h5>
                                         </div>
                                     </div>
                                 </div>

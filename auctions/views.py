@@ -2,6 +2,7 @@ import random
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import DataError
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404
 
@@ -38,9 +39,19 @@ def category_view(request, slug):
 @login_required(login_url="login")
 def item_details(request, slug):
     item = AuctionItem.objects.get(slug=slug)
+    try:
+        watchlist_item = Watchlist.objects.get(user=request.user, item=item)
+    except Watchlist.DoesNotExist:
+        watchlist_item = None
+    if watchlist_item:
+        watchlist_items = Watchlist.objects.filter(user=request.user).exclude(id=watchlist_item.id)
+    else:
+        watchlist_items = Watchlist.objects.filter(user=request.user)
     # selects and displays 3 random watchlist items on the detail page
-    watchlist_items = list(AuctionItem.objects.filter(watchlist=True).exclude(id=item.id))
-    watchlist_items = random.sample(watchlist_items, 3)
+    count = 3
+    if watchlist_items.count() < 3:
+        count = watchlist_items.count()
+    watchlist_items = random.sample(list(watchlist_items), count)
     context = {"item": item, "watchlist_items": watchlist_items}
     return render(request, "auctions/auction-detail.html", context)
 
@@ -56,7 +67,15 @@ def watchlist_item(request):
 @login_required(login_url="login")
 def add_to_watchlist(request, item_id):
     item = get_object_or_404(AuctionItem, id=item_id)
-    if
+    Watchlist.objects.get_or_create(user=request.user, item=item)
+    return HttpResponseRedirect(reverse('watchlist-items'))
+
+
+@login_required(login_url="login")
+def remove_from_watchlist(request, item_id):
+    item = get_object_or_404(Watchlist, id=item_id)
+    if item.user == request.user:
+        item.delete()
     return HttpResponseRedirect(reverse('watchlist-items'))
 
 

@@ -59,6 +59,12 @@ class Watchlist(models.Model):
     def __str__(self):
         return f"{self.user} -- {self.item}"
 
+    class Meta:
+        # to make sure 2 exact objects don't exist
+        constraints = [
+            models.UniqueConstraint(fields=["user", "item"], name="unique_user_item_watchlist")
+        ]
+
 
 class AuctionBid(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)

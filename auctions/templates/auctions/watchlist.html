@@ -33,7 +33,8 @@
                                     <div class="user d-flex align-items-center">
                                         <img src="{% static 'assets/images/auction-authr1.png' %}" alt="auction author"
                                              class="img-fluid me-3">
-                                        <p class="">By {{ watchlist_item.item.listed_by.first_name.capitalize }} {{ watchlist_item.item.listed_by.last_name.capitalize }}</p>
+                                        <p class="">
+                                            By {{ watchlist_item.item.listed_by.first_name.capitalize }} {{ watchlist_item.item.listed_by.last_name.capitalize }}</p>
                                     </div>
 
                                     <h4 class="text-danger">${{ watchlist_item.item.price }}</h4>
@@ -43,7 +44,9 @@
                                     <div class="cta text-start d-grid gap-3">
 
                                         <button class="btn btn-md btn-danger">Place a Bid</button>
-                                        <button class="btn btn-md btn-danger">Remove from Watchlist</button>
+                                        <a href="{% url 'remove-from-watchlist' watchlist_item.id %}"
+                                           class="btn btn-md btn-danger mb-3" id="liveToastBtn">Remove from Watchlist</a>
+
                                     </div>
 
                                     <div class="action-btns justify-content-between">
