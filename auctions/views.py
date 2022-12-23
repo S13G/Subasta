@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404
 
-from auctions.forms import AuctionForm, BidForm
+from auctions.forms import AuctionForm, AuctionBidForm
 from auctions.models import AuctionItem, Category, Watchlist
 
 
@@ -99,25 +99,23 @@ def create_listing(request):
         return render(request, "auctions/create-listing.html", {"form": form})
 
 
-@login_required(login_url="login")
+# @login_required(login_url="login")
 def place_bid(request, slug):
     item = get_object_or_404(AuctionItem, slug=slug)
+    form = AuctionBidForm()
     
     if request.method == "POST":
-        form = BidForm(request.POST)
+        form = AuctionBidForm(request.POST)
         if form.is_valid():
             bid_price = form.save(commit=False)
             bid_price.bidder = request.user
             bid_price.item = item
             bid_price.save()
             messages.success(request,
-                             "You've successfully placed a bid of {} on {}".format(bid_price.bid, bid_price.item.name))
+                             "You've successfully placed a bid of ${} on {}".format(bid_price.bid, bid_price.item.name))
             
             return HttpResponseRedirect(reverse('item-details'))
         messages.error(request, "Bid wasn't successful, Try again")
-        return render(request, "auctions/auction-detail.html", {"form": form})
-    else:
-        form = BidForm()
-        return render(request, "auctions/auction-detail.html", {"form": form})
+    return render(request, "auctions/auction-detail.html", {"form": form})
 
 
