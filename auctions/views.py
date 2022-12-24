@@ -38,6 +38,20 @@ def category_view(request, slug):
 @login_required(login_url="login")
 def item_details(request, slug):
     item = AuctionItem.objects.get(slug=slug)
+    form = AuctionBidForm()
+
+    if request.method == "POST":
+        form = AuctionBidForm(request.POST)
+        if form.is_valid():
+            bid_price = form.save(commit=False)
+            bid_price.bidder = request.user
+            bid_price.item = item
+            print(bid_price.save())
+            messages.success(request,
+                             "You've successfully placed a bid of ${} on {}".format(bid_price.bid, bid_price.item.name))
+
+            return HttpResponseRedirect(reverse('item-details'))
+        messages.error(request, "Bid wasn't successful, Try again")
     try:
         watchlist_item = Watchlist.objects.get(user=request.user, item=item)
     except Watchlist.DoesNotExist:
@@ -51,7 +65,7 @@ def item_details(request, slug):
     if watchlist_items.count() < 3:
         count = watchlist_items.count()
     watchlist_items = random.sample(list(watchlist_items), count)
-    context = {"item": item, "watchlist_items": watchlist_items}
+    context = {"item": item, "watchlist_items": watchlist_items, "form": form}
     return render(request, "auctions/auction-detail.html", context)
 
 
@@ -97,25 +111,4 @@ def create_listing(request):
     else:
         form = AuctionForm()
         return render(request, "auctions/create-listing.html", {"form": form})
-
-
-# @login_required(login_url="login")
-def place_bid(request, slug):
-    item = get_object_or_404(AuctionItem, slug=slug)
-    form = AuctionBidForm()
-    
-    if request.method == "POST":
-        form = AuctionBidForm(request.POST)
-        if form.is_valid():
-            bid_price = form.save(commit=False)
-            bid_price.bidder = request.user
-            bid_price.item = item
-            bid_price.save()
-            messages.success(request,
-                             "You've successfully placed a bid of ${} on {}".format(bid_price.bid, bid_price.item.name))
-            
-            return HttpResponseRedirect(reverse('item-details'))
-        messages.error(request, "Bid wasn't successful, Try again")
-    return render(request, "auctions/auction-detail.html", {"form": form})
-
 

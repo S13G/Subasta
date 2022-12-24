@@ -32,12 +32,14 @@ class AuctionForm(ModelForm):
 
 
 class AuctionBidForm(ModelForm):
-    bid = forms.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)],
-                             widget=forms.NumberInput(attrs={'class': 'form-control'}))
-
     class Meta:
         model = AuctionBid
         fields = ["bid"]
         labels = {
             "bid": "Bid Amount:",
         }
+
+    def __init__(self, *args, **kwargs):
+        super(AuctionBidForm, self).__init__(*args, **kwargs)
+
+        self.fields['bid'].widget.attrs.update({'class': 'form-control'})

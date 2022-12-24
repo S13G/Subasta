@@ -1,14 +1,17 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 
 from users.models import User
+from users.utils import login_excluded
 
 
 # Create your views here.
 
+@login_excluded(redirect_to="home")
 def login_view(request):
     if request.method == "POST":
 
@@ -29,12 +32,14 @@ def login_view(request):
         return render(request, "users/login.html")
 
 
+@login_required(login_url="login")
 def logout_view(request):
     logout(request)
     messages.info(request, "Successfully logged out")
     return HttpResponseRedirect(reverse("home"))
 
 
+@login_excluded(redirect_to="home")
 def register(request, **extra_fields):
     if request.method == "POST":
         first_name = request.POST["first-name"]
