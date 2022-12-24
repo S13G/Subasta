@@ -2,94 +2,101 @@
 {% load static %}
 
 {% block body %}
-<!-- Header Section -->
-<div class="container-fluid bg-danger py-5 text-white">
-    <div class="row pt-5">
-        <div class="col-12 col-lg-10">
-            <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Item Details</h1>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid mt-5 p-2">
-    <!-- multiple bid items should iterate over this block of code -->
-    <div class="row mx-0 mx-md-5 p-2">
-        <div class="col-12 border col-md-4 text-center">
-            <img src="{{ item.image_url }}" alt="auc1" class="img-fluid py-5">
-        </div>
-        <div class="col-12 col-md-8 border p-3">
-            <div class="auction-detail">
-                <h4 class="fw-bold">{{ item.name }}</h4>
-                <p>{{ item.description|linebreaksbr }}</p>
-                <p>Listed
-                    by: {{ item.listed_by.first_name.capitalize }} {{ item.listed_by.last_name.capitalize }}</p>
-                <p class="fs-5">Current Price: <span class="bidding-price text-danger">${{ item.price }}</span></p>
-                <p class="fs-5">Bidding Price: <span
-                        class="bidding-price text-danger">${{ item.starting_bid }}</span></p>
-            </div>
-            <div class="bid-control bg-light pt-3 px-3">
-                <form action="" class="d-grid gap-2" method="post">
-                    {% csrf_token %}
-                    <p class="fw-bold">Place your bid now</p>
-                    <label>{{ form.bid.label }}</label>
-                    {{ form.bid }}
-                    <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
-                        <input type="submit" class="btn btn-success mb-3 px-3" value="Place bid">
-                    </div>
-                </form>
-                <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
-                    <a href="#" class="btn btn-danger mb-3 px-3">Close Auction</a>
-                </div>
+    <!-- Header Section -->
+    <div class="container-fluid bg-danger py-5 text-white">
+        <div class="row pt-5">
+            <div class="col-12 col-lg-10">
+                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Item Details</h1>
             </div>
         </div>
     </div>
 
-    <div class="row mx-0 mx-md-5 p-2">
-        <div class="col-md-4 mt-3">
-            <h3>Previous Bids</h3>
-
-            <!-- iterate over bid profile -->
-            <div class="bidprofile mt-3 p-3 border rounded d-flex gap-4 align-items-center">
-                <div class="profile">
-                    <img src="{% static 'assets/images/auction-authr1.png' %}" alt="author1" class="img-fluid">
-                </div>
-                <div class="profile-details d-grid gap-1">
-                    <h5 class="name">Taiwo Jolomi</h5>
-                    <h5 class="setbid">Bid Price: $50</h5>
-                </div>
+    <div class="container-fluid mt-5 p-2">
+        <!-- multiple bid items should iterate over this block of code -->
+        <div class="row mx-0 mx-md-5 p-2">
+            <div class="col-12 border col-md-4 text-center">
+                <img src="{{ item.image_url }}" alt="auc1" class="img-fluid py-5">
             </div>
-        </div>
-
-        <div class="col-md-8">
-            <div class="row mt-3">
-                <div class="col-12">
-                    <h3>Watchlist items</h3>
+            <div class="col-12 col-md-8 border p-3">
+                <div class="auction-detail">
+                    <h4 class="fw-bold">{{ item.name }}</h4>
+                    <p>{{ item.description|linebreaksbr }}</p>
+                    <p>Listed
+                        by: {{ item.listed_by.first_name.capitalize }} {{ item.listed_by.last_name.capitalize }}</p>
+                    <p class="fs-5">Current Price: <span class="bidding-price text-danger">${{ item.price }}</span></p>
+                    <p class="fs-5">Bidding Price: <span
+                            class="bidding-price text-danger">${{ item.starting_bid }}</span></p>
                 </div>
-
-                <!-- other watchlist items to be iterated over -->
-                {% for watchlist_item in watchlist_items %}
-                    <div class="col-12 col-md-6 col-lg-4 auction-card mb-3 text-start">
-                        <a href="{% url 'item-details' watchlist_item.item.slug %}">
-                            <div class=" p-2 auction border border-outline-1">
-                                <div class="auction-photo text-center mb-3">
-                                    <img src="{{ watchlist_item.item.image_url }}" alt="auction-1"
-                                         class="img-fluid">
-                                </div>
-                                <div class="auction-details">
-                                    <p class="text-start fs-5">{{ watchlist_item.item.name }}</p>
-
-                                    <div class="auctioner mt-3">
-                                        <h5 class="text-danger">${{ watchlist_item.item.price }}</h5>
-                                    </div>
-                                </div>
+                <div class="bid-control bg-light pt-3 px-3">
+                    {% if not item.listed_by == request.user %}
+                        <form action="" class="d-grid gap-2" method="post">
+                            {% csrf_token %}
+                            <p class="fw-bold">Place your bid now</p>
+                            <label>{{ form.bid.label }}</label>
+                            {{ form.bid }}
+                            <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
+                                <input type="submit" class="btn btn-success mb-3 px-3" value="Place bid">
                             </div>
-                        </a>
+                        </form>
+                    {% endif %}
+
+                    {% if item.listed_by == request.user %}
+                    <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
+                        <a href="{% url 'close-auction' item.slug %}" class="btn btn-danger mb-3 px-3">Close Auction</a>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mx-0 mx-md-5 p-2">
+            <div class="col-md-4 mt-3">
+                <h3>Previous Bids</h3>
+
+                <!-- iterate over bid profile -->
+                {% for previous_bid in previous_bids %}
+                    <div class="bidprofile mt-3 p-3 border rounded d-flex gap-4 align-items-center">
+                        <div class="profile">
+                            <img src="{% static 'assets/images/auction-authr1.png' %}" alt="author1" class="img-fluid">
+                        </div>
+                        <div class="profile-details d-grid gap-1">
+                            <h5 class="name">{{ previous_bid.bidder.first_name }} {{ previous_bid.bidder.last_name }}</h5>
+                            <h5 class="setbid">Bid Price: ${{ previous_bid.bid }}</h5>
+                        </div>
                     </div>
                 {% endfor %}
+            </div>
 
+            <div class="col-md-8">
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h3>Watchlist items</h3>
+                    </div>
+
+                    <!-- other watchlist items to be iterated over -->
+                    {% for watchlist_item in watchlist_items %}
+                        <div class="col-12 col-md-6 col-lg-4 auction-card mb-3 text-start">
+                            <a href="{% url 'item-details' watchlist_item.item.slug %}">
+                                <div class=" p-2 auction border border-outline-1">
+                                    <div class="auction-photo text-center mb-3">
+                                        <img src="{{ watchlist_item.item.image_url }}" alt="auction-1"
+                                             class="img-fluid">
+                                    </div>
+                                    <div class="auction-details">
+                                        <p class="text-start fs-5">{{ watchlist_item.item.name }}</p>
+
+                                        <div class="auctioner mt-3">
+                                            <h5 class="text-danger">${{ watchlist_item.item.price }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock body %}

@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 
 from users.models import User
-from users.utils import login_excluded
+from users.decorators import login_excluded
 
 
 # Create your views here.

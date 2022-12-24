@@ -34,6 +34,7 @@ class AuctionItem(models.Model):
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0,
                                        null=True)
     listed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="item")
+    closed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -68,7 +69,7 @@ class Watchlist(models.Model):
 
 class AuctionBid(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
-    item = models.ForeignKey(AuctionItem, related_name='bid', on_delete=models.CASCADE)
+    item = models.ForeignKey(AuctionItem, related_name='bids', on_delete=models.CASCADE)
     bidder = models.ForeignKey(User, related_name='bidded_item', on_delete=models.CASCADE)
     bid = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], default=0, null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -76,7 +77,7 @@ class AuctionBid(models.Model):
     class Meta:
         verbose_name = "Auction Bid"
         verbose_name_plural = "Auction Bids"
-        ordering = ["-created", "item"]
+        ordering = ["-created"]
 
     def __str__(self):
         return f"{self.bidder} - {self.item} - {self.bid}"

@@ -6,12 +6,13 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404
 
 from auctions.forms import AuctionForm, AuctionBidForm
-from auctions.models import AuctionItem, Category, Watchlist
+from auctions.models import AuctionItem, Category, Watchlist, AuctionBid
+from auctions.utils import watchlist_items_in_details
 
 
 def home(request):
     # selects and displays 6 random items on the main page
-    featured_items = list(AuctionItem.objects.select_related('category').order_by("-id").all())
+    featured_items = list(AuctionItem.objects.select_related('category').order_by("-id").all().exclude(closed=True))
     featured_items = random.sample(featured_items, 6)
     context = {"featured_items": featured_items}
     return render(request, "templates/index.html", context)
@@ -19,7 +20,7 @@ def home(request):
 
 def all_auctions(request):
     categories = Category.objects.all()
-    items = AuctionItem.objects.all()
+    items = AuctionItem.objects.all().exclude(closed=True)
     context = {"categories": categories, "items": items}
     return render(request, "auctions/all-auctions.html", context)
 
@@ -37,35 +38,34 @@ def category_view(request, slug):
 
 @login_required(login_url="login")
 def item_details(request, slug):
-    item = AuctionItem.objects.get(slug=slug)
-    form = AuctionBidForm()
-
-    if request.method == "POST":
+    item, watchlist_items = watchlist_items_in_details(request, slug)
+    if request.user != item.listed_by and request.method == "POST":
         form = AuctionBidForm(request.POST)
         if form.is_valid():
             bid_price = form.save(commit=False)
             bid_price.bidder = request.user
             bid_price.item = item
-            print(bid_price.save())
-            messages.success(request,
-                             "You've successfully placed a bid of ${} on {}".format(bid_price.bid, bid_price.item.name))
+            if bid_price.bid <= item.starting_bid:
+                messages.info(request, "Your bid is less than the starting price or less than the other bidder's bid")
+            else:
+                if item.bids.exists() and item.bids.last().bid >= bid_price.bid:
+                    messages.info(request, "Bid a price larger than the previous bidder")
+                else:
+                    bid_price.save()
+                    messages.success(request,
+                                     "You've successfully placed a bid of ${} on {}".format(bid_price.bid,
+                                                                                            bid_price.item.name))
 
-            return HttpResponseRedirect(reverse('item-details'))
+            return HttpResponseRedirect(f'/listings/item/{slug}/')
         messages.error(request, "Bid wasn't successful, Try again")
-    try:
-        watchlist_item = Watchlist.objects.get(user=request.user, item=item)
-    except Watchlist.DoesNotExist:
-        watchlist_item = None
-    if watchlist_item:
-        watchlist_items = Watchlist.objects.filter(user=request.user).exclude(id=watchlist_item.id)
     else:
-        watchlist_items = Watchlist.objects.filter(user=request.user)
-    # selects and displays 3 random watchlist items on the detail page
-    count = 3
-    if watchlist_items.count() < 3:
-        count = watchlist_items.count()
-    watchlist_items = random.sample(list(watchlist_items), count)
-    context = {"item": item, "watchlist_items": watchlist_items, "form": form}
+        form = AuctionBidForm()
+
+    previous_bids = AuctionBid.objects.filter(item=item).order_by("-created")
+    if previous_bids.count() > 3:
+        previous_bids = previous_bids[:3]
+
+    context = {"item": item, "watchlist_items": watchlist_items, "form": form, "previous_bids": previous_bids}
     return render(request, "auctions/auction-detail.html", context)
 
 
@@ -79,7 +79,7 @@ def watchlist_item(request):
 
 @login_required(login_url="login")
 def add_to_watchlist(request, item_id):
-    item = get_object_or_404(AuctionItem, id=item_id)
+    item = get_object_or_404(AuctionItem, id=item_id, closed=False)
     Watchlist.objects.get_or_create(user=request.user, item=item)
     return HttpResponseRedirect(reverse('watchlist-items'))
 
@@ -112,3 +112,11 @@ def create_listing(request):
         form = AuctionForm()
         return render(request, "auctions/create-listing.html", {"form": form})
 
+
+def close_auction(request, slug):
+    item = get_object_or_404(AuctionItem, slug=slug, closed=False)
+    if item.listed_by == request.user:
+        item.closed = True
+        item.save()
+        messages.info(request, "You closed an auction on {}".format(item.name))
+    return HttpResponseRedirect(reverse("listings"))
