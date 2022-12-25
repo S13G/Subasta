@@ -2,6 +2,7 @@ import random
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.utils import Error
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404
 
@@ -85,15 +86,17 @@ def watchlist_item(request):
 def add_to_watchlist(request, item_id):
     item = get_object_or_404(AuctionItem, id=item_id, closed=False)
     Watchlist.objects.get_or_create(user=request.user, item=item)
+    messages.info(request, "{} has been added to watchlist".format(item.name))
     return HttpResponseRedirect(reverse('watchlist-items'))
 
 
 @login_required(login_url="login")
 def remove_from_watchlist(request, item_id):
     item = get_object_or_404(Watchlist, id=item_id)
-    # if item belongs to the current authenticated user, remcve it
+    # if item belongs to the current authenticated user, remove it
     if item.user == request.user:
         item.delete()
+        messages.info(request, "{} has been removed from watchlist".format(item.item.name))
     return HttpResponseRedirect(reverse('watchlist-items'))
 
 
@@ -120,8 +123,16 @@ def create_listing(request):
 
 def close_auction(request, slug):
     item = get_object_or_404(AuctionItem, slug=slug, closed=False)
-    if item.listed_by == request.user:
+    if item.bids.exists() and item.listed_by == request.user:
+        last_bidder = item.bids.last().bidder.first_name
         item.closed = True
-        item.save()
-        messages.info(request, "You closed an auction on {}".format(item.name))
+        messages.success(request, "You closed an auction on {} and {} won the auction".format(item.name, last_bidder))
+        try:
+            if item.bids is not None and request.user == item.bids.last().bidder:
+                if print(request.user.is_authenticated or item.bids.last().bidder.is_authenticated):
+                    messages.success(request, "You have won the auction on {}".format(item.name))
+        except Error:
+            messages.info(request, "Error processing request")
+    #     item.save()
+    #     item.delete()
     return HttpResponseRedirect(reverse("listings"))

@@ -172,7 +172,7 @@
                     message: '{{message}}',
                     position: 'topCenter',
                     zindex: 99999,
-                    timeout: 2100,
+                    timeout: 2200,
                 });
             {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
                 iziToast.info({
@@ -180,7 +180,7 @@
                     message: '{{message}}',
                     position: 'topCenter',
                     zindex: 99999,
-                    timeout: 2100,
+                    timeout: 2600,
                 });
             {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
                 iziToast.error({
@@ -188,7 +188,7 @@
                     message: '{{message}}',
                     position: 'topCenter',
                     zindex: 99999,
-                    timeout: 2100,
+                    timeout: 2300,
                 });
             {% endif %}
         {% endfor %}
