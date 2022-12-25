@@ -1,0 +1,100 @@
+{% extends 'templates/main.html' %}
+{% load static %}
+
+{% block body %}
+    <!-- Header Section -->
+    <div class="container-fluid bg-danger py-5 text-white">
+        <div class="row pt-5">
+            <div class="col-12 col-lg-10">
+                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Item Details</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-5 p-2">
+        <!-- multiple bid items should iterate over this block of code -->
+        <div class="row mx-0 mx-md-5 p-2">
+            <div class="col-12 border col-md-4 text-center">
+                <img src="{{ item.image_url }}" alt="auc1" class="img-fluid py-5">
+            </div>
+            <div class="col-12 col-md-8 border p-3">
+                <div class="auction-detail">
+                    <h4 class="fw-bold">{{ item.name }}</h4>
+                    <p>{{ item.description|linebreaksbr }}</p>
+                    <p>Listed
+                        by: {{ item.listed_by.first_name.capitalize }} {{ item.listed_by.last_name.capitalize }}</p>
+                    <p class="fs-5">Current Price: <span class="bidding-price text-danger">${{ item.price }}</span></p>
+                    <p class="fs-5">Bidding Price: <span
+                            class="bidding-price text-danger">${{ item.starting_bid }}</span></p>
+                </div>
+                {% if request.user == item_winner %}
+                    <div class="bid-control bg-light pt-3 px-3">
+                        <p class="fw-bold btn btn-success mb-3 px-3">You have won this auction</p>
+                    </div>
+                {% elif item.listed_by == request.user %}
+                    <div class="bid-control bg-light pt-3 px-3">
+                        <p class="fw-bold btn btn-danger mb-3 px-3">You closed this auction</p>
+                    </div>
+                {% elif request.user.id not in item_bidders %}
+                    <div class="bid-control bg-light pt-3 px-3">
+                        <p class="fw-bold btn btn-danger mb-3 px-3">You didn't bid on this auction</p>
+                    </div>
+                {% else %}
+                    <div class="bid-control bg-light pt-3 px-3">
+                        <p class="fw-bold btn btn-danger mb-3 px-3">You lost this auction</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row mx-0 mx-md-5 p-2">
+            <div class="col-md-4 mt-3">
+                <h3>Previous Bids</h3>
+
+                <!-- iterate over bid profile -->
+                {% for previous_bid in previous_bids %}
+                    <div class="bidprofile mt-3 p-3 border rounded d-flex gap-4 align-items-center">
+                        <div class="profile">
+                            <img src="{% static 'assets/images/auction-authr1.png' %}" alt="author1" class="img-fluid">
+                        </div>
+                        <div class="profile-details d-grid gap-1">
+                            <h5 class="name">{{ previous_bid.bidder.first_name }} {{ previous_bid.bidder.last_name }}</h5>
+                            <h5 class="setbid">Bid Price: ${{ previous_bid.bid }}</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-8">
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h3>Closed Items</h3>
+                    </div>
+
+                    <!-- other closed items to be iterated over -->
+                    {% for closed_item in other_closed_items %}
+                        <div class="col-12 col-md-6 col-lg-4 auction-card mb-3 text-start">
+                            <a href="{% url 'closed-item-details' closed_item.slug %}">
+                                <div class=" p-2 auction border border-outline-1">
+                                    <div class="auction-photo text-center mb-3">
+                                        <img src="{{ closed_item.image_url }}" alt="auction-1"
+                                             class="img-fluid">
+                                    </div>
+                                    <div class="auction-details">
+                                        <p class="text-start fs-5">{{ closed_item.name }}</p>
+
+                                        <div class="auctioner mt-3">
+                                            <h5 class="text-danger">${{ closed_item.price }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}

@@ -51,7 +51,11 @@
                     <li class="nav-item mx-2">
                         <a class="nav-link" href="{% url 'create-listings' %}">Create Listing</a>
                     </li>
-
+                    <li class="nav-item mx-2">
+                    <!-- same as auction details -->
+                    <a class="nav-link" href="{% url 'closed-listings' %}">Closed Listings <span
+                                style="color: red;">{% closed_listing_count %}</span></a>
+                </li>
 
                     </ul>
 
@@ -124,7 +128,7 @@
                     <a href="">Customer FAQs</a>
                     <a href="">Terms and Conditions</a>
                     <a href="">Security Information</a>
-                    <a href="">Mercahnt Add Policy</a>
+                    <a href="">Merchant Add Policy</a>
                 </div>
             </div>
         </div>

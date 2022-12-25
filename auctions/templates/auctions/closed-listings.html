@@ -8,7 +8,7 @@
     <div class="container-fluid bg-danger py-5 text-white">
         <div class="row pt-5">
             <div class="col-12 col-lg-10 d-grid gap-3 d-md-flex justify-content-between align-items-center">
-                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Active Listings</h1>
+                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Closed Listings</h1>
 
                 <div class="">
                     <button class="btn btn-primary px-3 py-2" type="button" data-bs-toggle="offcanvas"
@@ -31,7 +31,7 @@
                         <div class="d-grid gap-1 text-center text-white categories">
                             {% for category in categories %}
                                 <a class="my-2 mx-3 py-3 bg-secondary" data-bs-dismiss="offcanvas" aria-label="Close"
-                                   onclick="window.location=`{% url 'category-filter' category.slug %}`">
+                                   onclick="window.location=`{% url 'closed-category-filter' category.slug %}`">
                                     <h5>{{ category.name }}</h5></a>
                             {% endfor %}
                         </div>
@@ -50,10 +50,10 @@
             <!-- i think if you are gonna have multiple items, continuous html blocks would be unhealthy, so you can use whatever
                     function you have under your sleeves to replicate one column from  -->
             <!-- Here ...Start -->
-            {% for item in items %}
+            {% for item in closed_items %}
                 <div class="col-12 col-md-6 col-lg-4 p-3 auction-card  text-center">
                     <div class=" p-3 auction border border-outline-1">
-                        <a href="{% url 'item-details' item.slug %}">
+                        <a href="{% url 'closed-item-details' item.slug %}">
                             <div class="auction-photo">
                                 <img src="{{ item.image_url }}" alt="auction-1" class="img-fluid">
                                 <p class="fw-bold auction-time text-danger bg-white m-0 p-3 mx-auto">{{ item.name }}</p>
@@ -73,12 +73,6 @@
                                 <h4 class="text-danger">${{ item.price }}</h4>
                             </div>
                             <div class="auction-action d-flex align-items-center justify-content-start">
-                                <div class="cta text-start d-grid me-auto">
-                                    {% if not item|check_watchlist_item_existence:request %}
-                                        <a href="{% url 'add-to-watchlist' item.id %}"
-                                           class="btn btn-md btn-danger mb-3" id="liveToastBtn">Add to Watchlist</a>
-                                    {% endif %}
-                                </div>
                                 <div class="action-btns justify-content-between ms-auto">
                                     <div class="dropdown">
                                         <button class="btn" type="button" id="dropdownMenuButton1"
@@ -97,14 +91,8 @@
                     </div>
                 </div>
             {% empty %}
-                <br>
-                <h4 class="text-danger fw-bold">No Active Listings</h4>
-                <br>
-                <a href="{% url 'create-listings' %}">
-                    <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
-                        <input type="submit" class="btn btn-danger mb-3 px-3" value="Add item">
-                    </div>
-                </a>
+            <br>
+            <h4 class="text-danger fw-bold">No closed Items</h4>
                 <!-- To Here ...Stop... then you can delete these from below... be sure to collapse the blocks to have a better view -->
 
             {% endfor %}

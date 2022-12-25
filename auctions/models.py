@@ -4,7 +4,6 @@ from autoslug import AutoSlugField
 from django.core.validators import MinValueValidator
 from django.db import models, IntegrityError
 
-
 from users.models import User
 
 
@@ -52,6 +51,11 @@ class AuctionItem(models.Model):
             url = ''
         return url
 
+    @property
+    def auction_item_bidders(self):
+        queryset = self.bids.all().values_list("bidder_id", flat=True)
+        return queryset
+
 
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="watchlists")
@@ -77,7 +81,7 @@ class AuctionBid(models.Model):
     class Meta:
         verbose_name = "Auction Bid"
         verbose_name_plural = "Auction Bids"
-        ordering = ["-created"]
+        ordering = ["created"]
 
     def __str__(self):
         return f"{self.bidder} - {self.item} - {self.bid}"
