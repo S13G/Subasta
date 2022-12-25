@@ -40,7 +40,7 @@ class AuctionItem(models.Model):
     class Meta:
         verbose_name = "Auction Item"
         verbose_name_plural = "Auction Items"
-        ordering = ["-created", "name"]
+        ordering = ["-created"]
 
     def __str__(self):
         return str(self.name)

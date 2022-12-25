@@ -4,6 +4,7 @@ from auctions.models import Watchlist, AuctionItem
 
 
 def watchlist_items_in_details(request, slug):
+    # setting watch-lists in a particular listing
     item = AuctionItem.objects.get(slug=slug, closed=False)
     try:
         watchlist_item = Watchlist.objects.get(user=request.user, item=item)

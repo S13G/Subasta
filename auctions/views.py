@@ -45,9 +45,12 @@ def item_details(request, slug):
             bid_price = form.save(commit=False)
             bid_price.bidder = request.user
             bid_price.item = item
+
+            # checking if the bid price is less than the starting bid specified by the item owner
             if bid_price.bid <= item.starting_bid:
                 messages.info(request, "Your bid is less than the starting price or less than the other bidder's bid")
             else:
+                # checking if the last bid before the new bid exists and if it's greater than the new bid made
                 if item.bids.exists() and item.bids.last().bid >= bid_price.bid:
                     messages.info(request, "Bid a price larger than the previous bidder")
                 else:
@@ -61,6 +64,7 @@ def item_details(request, slug):
     else:
         form = AuctionBidForm()
 
+    # if number of bids appearing in the template is more than 3, get the 3 latest bids
     previous_bids = AuctionBid.objects.filter(item=item).order_by("-created")
     if previous_bids.count() > 3:
         previous_bids = previous_bids[:3]
@@ -87,6 +91,7 @@ def add_to_watchlist(request, item_id):
 @login_required(login_url="login")
 def remove_from_watchlist(request, item_id):
     item = get_object_or_404(Watchlist, id=item_id)
+    # if item belongs to the current authenticated user, remcve it
     if item.user == request.user:
         item.delete()
     return HttpResponseRedirect(reverse('watchlist-items'))

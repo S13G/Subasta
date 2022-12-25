@@ -12,7 +12,7 @@ class AuctionForm(ModelForm):
     class Meta:
         model = AuctionItem
         fields = "__all__"
-        exclude = ["listed_by"]
+        exclude = ["listed_by", "closed"]
         labels = {
             "name": "Item Name",
             "image": "Upload a clear image of your item",
