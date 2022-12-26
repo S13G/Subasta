@@ -61,14 +61,14 @@ class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="watchlists")
     item = models.ForeignKey(AuctionItem, on_delete=models.CASCADE, null=True)
 
-    def __str__(self):
-        return f"{self.user} -- {self.item}"
-
     class Meta:
         # to make sure 2 exact objects don't exist
         constraints = [
             models.UniqueConstraint(fields=["user", "item"], name="unique_user_item_watchlist")
         ]
+
+    def __str__(self):
+        return f"{self.user} -- {self.item}"
 
 
 class AuctionBid(models.Model):
@@ -85,3 +85,20 @@ class AuctionBid(models.Model):
 
     def __str__(self):
         return f"{self.bidder} - {self.item} - {self.bid}"
+
+
+class Comment(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments", null=True)
+    item = models.ForeignKey(AuctionItem, related_name='comments', on_delete=models.CASCADE)
+    body = models.TextField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # to make sure 2 exact objects don't exist
+        constraints = [
+            models.UniqueConstraint(fields=["owner", "item"], name="unique_user_item_comment")
+        ]
+
+    def __str__(self):
+        return f"{self.owner} - {self.item}"

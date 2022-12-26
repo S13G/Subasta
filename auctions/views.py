@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404
 
-from auctions.forms import AuctionForm, AuctionBidForm
+from auctions.forms import AuctionForm
 from auctions.models import AuctionItem, Category, Watchlist, AuctionBid
-from auctions.utils import watchlist_items_in_details, closed_items_in_details
+from auctions.utils import watchlist_items_in_details, closed_items_in_details, auction_bid_form_in_item, \
+    comment_form_in_item
 
 
 def home(request):
@@ -42,37 +43,15 @@ def category_view(request, slug):
 @login_required(login_url="login")
 def item_details(request, slug):
     item, watchlist_items = watchlist_items_in_details(request, slug)
-    if request.user != item.listed_by and request.method == "POST":
-        form = AuctionBidForm(request.POST)
-        if form.is_valid():
-            bid_price = form.save(commit=False)
-            bid_price.bidder = request.user
-            bid_price.item = item
-
-            # checking if the bid price is less than the starting bid specified by the item owner
-            if bid_price.bid <= item.starting_bid:
-                messages.info(request, "Your bid is less than the starting price or less than the other bidder's bid")
-            else:
-                # checking if the last bid before the new bid exists and if it's greater than the new bid made
-                if item.bids.exists() and item.bids.last().bid >= bid_price.bid:
-                    messages.info(request, "Bid a price larger than the previous bidder")
-                else:
-                    bid_price.save()
-                    messages.success(request,
-                                     "You've successfully placed a bid of ${} on {}".format(bid_price.bid,
-                                                                                            bid_price.item.name))
-
-            return HttpResponseRedirect(f'/listings/item/{slug}/')
-        messages.error(request, "Bid wasn't successful, Try again")
-    else:
-        form = AuctionBidForm()
-
+    auction_bid_form = auction_bid_form_in_item(request, slug)
+    comment_form, all_comments = comment_form_in_item(request, slug)
     # if number of bids appearing in the template is more than 3, get the 3 latest bids
     previous_bids = AuctionBid.objects.filter(item=item).order_by("-created")
     if previous_bids.count() > 3:
         previous_bids = previous_bids[:3]
 
-    context = {"item": item, "watchlist_items": watchlist_items, "form": form, "previous_bids": previous_bids}
+    context = {"item": item, "watchlist_items": watchlist_items, "auction_bid_form": auction_bid_form,
+               "previous_bids": previous_bids, "comment_form": comment_form, "all_comments": all_comments}
     return render(request, "auctions/auction-detail.html", context)
 
 
@@ -159,11 +138,12 @@ def closed_category_view(request, slug):
 
 
 @login_required(login_url="login")
-def closed_item_details(request, slug):
-    item, other_closed_item = closed_items_in_details(request, slug)
+def closed_item_details(request, slug, comments):
+    item, other_closed_item = closed_items_in_details(slug)
+    all_comments = comment_form_in_item(request, slug, comments)
     try:
         item_winner = item.bids.last().bidder
-    except:
+    except AuctionItem.DoesNotExist:
         item_winner = None
     item_bidders = item.auction_item_bidders
     # if number of bids appearing in the template is more than 3, get the 3 latest bids
@@ -171,5 +151,5 @@ def closed_item_details(request, slug):
     if previous_bids.count() > 3:
         previous_bids = previous_bids[:3]
     context = {"item": item, "other_closed_items": other_closed_item, "item_winner": item_winner,
-               "previous_bids": previous_bids, "item_bidders": item_bidders}
+               "previous_bids": previous_bids, "item_bidders": item_bidders, "all_comments": all_comments}
     return render(request, "auctions/closed-auction-detail.html", context)

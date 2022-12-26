@@ -32,8 +32,8 @@
                         <form action="" class="d-grid gap-2" method="post">
                             {% csrf_token %}
                             <p class="fw-bold">Place your bid now</p>
-                            <label>{{ form.bid.label }}</label>
-                            {{ form.bid }}
+                            <label>{{ auction_bid_form.bid.label }}</label>
+                            {{ auction_bid_form.bid }}
                             <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
                                 <input type="submit" class="btn btn-success mb-3 px-3" value="Place bid">
                             </div>
@@ -41,10 +41,11 @@
                     {% endif %}
 
                     {% if item.listed_by == request.user %}
-                    <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
-                        <a href="{% url 'close-auction' item.slug %}" class="btn btn-danger mb-3 px-3">Close Auction</a>
-                    </div>
-                {% endif %}
+                        <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
+                            <a href="{% url 'close-auction' item.slug %}" class="btn btn-danger mb-3 px-3">Close
+                                Auction</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -63,6 +64,10 @@
                             <h5 class="name">{{ previous_bid.bidder.first_name }} {{ previous_bid.bidder.last_name }}</h5>
                             <h5 class="setbid">Bid Price: ${{ previous_bid.bid }}</h5>
                         </div>
+                    </div>
+                {% empty %}
+                    <div class="bid-control">
+                        <p class="fw-bold btn btn-danger mb-3 px-3">No Bids</p>
                     </div>
                 {% endfor %}
             </div>
@@ -92,11 +97,47 @@
                                 </div>
                             </a>
                         </div>
+                    {% empty %}
+                        <div class="bid-control">
+                            <p class="fw-bold btn btn-danger mb-3 px-3">No additional watchlist item</p>
+                        </div>
                     {% endfor %}
 
+                    <div class="col-md-8">
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h3>Comments</h3>
+                            </div>
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="bid-control bg-light pt-3 px-3">
+                                    {{ comment_form.body }}
+                                    <div class="text-center pt-3 d-grid d-lg-flex justify-content-lg-between justify-content-center">
+                                        <input type="submit" class="btn btn-success mb-3 px-3" value="Comment">
+                                    </div>
+                            </form>
+
+                            <div class="comment">
+                                {% for comment in all_comments %}
+                                    {% if comment.body %}
+                                        <div class="d-flex align-items-center">
+                                            <img src="{% static 'assets/images/auction-authr1.png' %}"
+                                                 alt="auction author"
+                                                 class="img-fluid me-3">
+                                            <div class="comment__details">
+                                                <b><a href="#"
+                                                      class="comment__author">{{ comment.owner.first_name }} {{ comment.owner.last_name }}</a></b>
+                                                <p class="comment__info">{{ comment.body|linebreaksbr }}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% empty %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 {% endblock body %}

@@ -62,6 +62,10 @@
                             <h5 class="setbid">Bid Price: ${{ previous_bid.bid }}</h5>
                         </div>
                     </div>
+                {% empty %}
+                    <div class="bid-control">
+                        <p class="fw-bold btn btn-danger mb-3 px-3">No Bids</p>
+                    </div>
                 {% endfor %}
             </div>
 
@@ -90,8 +94,34 @@
                                 </div>
                             </a>
                         </div>
+                    {% empty %}
                     {% endfor %}
 
+
+                    <div class="col-md-8">
+                        <div class="row mt-3">
+                            <div class="comment">
+                                {% for comment in all_comments %}
+                                    {% if comment.body %}
+                                        <div class="d-flex align-items-center">
+                                            <img src="{% static 'assets/images/auction-authr1.png' %}"
+                                                 alt="auction author"
+                                                 class="img-fluid me-3">
+                                            <div class="comment__details">
+                                                <b><a href="#"
+                                                      class="comment__author">{{ comment.owner.first_name }} {{ comment.owner.last_name }}</a></b>
+                                                <p class="comment__info">{{ comment.body|linebreaksbr }}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% empty %}
+                                    <div class="bid-control">
+                                        <p class="fw-bold btn btn-danger mb-3 px-3">No Comment</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

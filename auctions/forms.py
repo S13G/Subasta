@@ -1,8 +1,6 @@
-from django import forms
-from django.core.validators import MinValueValidator
 from django.forms import ModelForm
 
-from auctions.models import AuctionItem, AuctionBid
+from auctions.models import AuctionItem, AuctionBid, Comment
 
 
 # Create forms
@@ -43,3 +41,14 @@ class AuctionBidForm(ModelForm):
         super(AuctionBidForm, self).__init__(*args, **kwargs)
 
         self.fields['bid'].widget.attrs.update({'class': 'form-control'})
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["body"]
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+
+        self.fields['body'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Enter your comment'})
