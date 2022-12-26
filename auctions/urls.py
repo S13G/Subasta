@@ -15,4 +15,6 @@ urlpatterns = [
     path("closed_listings/", views.closed_listings, name="closed-listings"),
     path("closed_listings/<slug:slug>/", views.closed_category_view, name="closed-category-filter"),
     path("closed_listings/item/<slug:slug>/", views.closed_item_details, name="closed-item-details"),
+    path("comment/<slug:item_slug>/", views.comment_form_in_item, name="comment"),
+    path("auction/<slug:item_slug>/", views.auction_bid_form_in_item, name="auction_bid")
 ]

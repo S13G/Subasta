@@ -3,12 +3,11 @@ import random
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render, reverse, get_object_or_404
+from django.shortcuts import render, reverse, get_object_or_404, redirect
 
-from auctions.forms import AuctionForm
+from auctions.forms import AuctionForm, CommentForm, AuctionBidForm
 from auctions.models import AuctionItem, Category, Watchlist, AuctionBid
-from auctions.utils import watchlist_items_in_details, closed_items_in_details, auction_bid_form_in_item, \
-    comment_form_in_item
+from auctions.utils import watchlist_items_in_details, closed_items_in_details
 
 
 def home(request):
@@ -43,9 +42,10 @@ def category_view(request, slug):
 @login_required(login_url="login")
 def item_details(request, slug):
     item, watchlist_items = watchlist_items_in_details(request, slug)
-    auction_bid_form = auction_bid_form_in_item(request, slug)
-    comment_form = comment_form_in_item(request, slug)
+    auction_bid_form = AuctionBidForm()
     all_comments = item.comments.all()
+    comment_form = CommentForm()
+
     # if number of bids appearing in the template is more than 3, get the 3 latest bids
     previous_bids = AuctionBid.objects.filter(item=item).order_by("-created")
     if previous_bids.count() > 3:
@@ -154,3 +154,56 @@ def closed_item_details(request, slug):
     context = {"item": item, "other_closed_items": other_closed_item, "item_winner": item_winner,
                "previous_bids": previous_bids, "item_bidders": item_bidders, "all_comments": all_comments}
     return render(request, "auctions/closed-auction-detail.html", context)
+
+
+# this function handles the auction form view
+# passes the url of the view in the action of the form template
+@login_required(login_url="login")
+def auction_bid_form_in_item(request, item_slug):
+    try:
+        item = AuctionItem.objects.get(slug=item_slug, closed=False)
+    except AuctionItem.DoesNotExist:
+        raise Http404()
+    if request.user != item.listed_by and request.method == "POST" and "auction-btn" in request.POST:
+        auction_bid_form = AuctionBidForm(request.POST)
+        if auction_bid_form.is_valid():
+            bid_price = auction_bid_form.save(commit=False)
+            bid_price.bidder = request.user
+            bid_price.item = item
+
+            # checking if the bid price is less than the starting bid specified by the item owner
+            if bid_price.bid <= item.starting_bid:
+                messages.info(request, "Your bid is less than the starting price or less than the other bidder's bid")
+            else:
+                # checking if the last bid before the new bid exists and if it's greater than the new bid made
+                if item.bids.exists() and item.bids.last().bid >= bid_price.bid:
+                    messages.info(request, "Bid a price larger than the previous bidder")
+                else:
+                    bid_price.save()
+                    messages.success(request,
+                                     "You've successfully placed a bid of ${} on {}".format(bid_price.bid,
+                                                                                            bid_price.item.name))
+
+            return redirect(f'/listings/item/{item.slug}/')
+        messages.error(request, "Bid wasn't successful, Try again")
+
+
+# this function handles the comment form view
+# passes the url of the view in the action of the form template
+@login_required(login_url="login")
+def comment_form_in_item(request, item_slug):
+    try:
+        item = AuctionItem.objects.get(slug=item_slug, closed=False)
+    except AuctionItem.DoesNotExist:
+        raise Http404()
+    if request.method == "POST" and "comment-btn" in request.POST:
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.item = item
+            comment.owner = request.user
+            comment.save()
+            messages.success(request, "Comment added to {} successfully".format(item))
+        else:
+            messages.info(request, "Error processing request")
+        return redirect(f'/listings/item/{item.slug}/')

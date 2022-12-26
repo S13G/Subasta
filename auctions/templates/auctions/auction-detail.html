@@ -34,7 +34,7 @@
                                 Auction</a>
                         </div>
                     {% elif item.listed_by != request.user %}
-                        <form action="" class="d-grid gap-2" method="post">
+                        <form action="/auction/{{ item.slug }}/" class="d-grid gap-2" method="post">
                             {% csrf_token %}
                             <p class="fw-bold">Place your bid now</p>
                             <label>{{ auction_bid_form.bid.label }}</label>
@@ -122,7 +122,7 @@
                                     <p class="btn btn-danger mb-3 px-3">You can't comment on your auction</p>
                                 </div>
                             {% else %}
-                                <form method="post" action="">
+                                <form method="post" action="/comment/{{ item.slug }}/">
                                     {% csrf_token %}
                                     <div class="bid-control bg-light pt-3 px-3">
                                         {{ comment_form.body }}
