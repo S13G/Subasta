@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('auctions', '0009_alter_auctionbid_options_alter_auctionitem_options_and_more'),
     ]

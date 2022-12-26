@@ -95,6 +95,9 @@
                             </a>
                         </div>
                     {% empty %}
+                        <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
+                            <p class="btn btn-info mb-3 px-3">No other closed listing</p>
+                        </div>
                     {% endfor %}
 
 
@@ -118,6 +121,9 @@
                                         </div>
                                     {% endif %}
                                 {% empty %}
+                                    <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
+                                        <p class="btn btn-info mb-3 px-3">No comments made on this listing</p>
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>

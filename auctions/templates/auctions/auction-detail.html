@@ -103,7 +103,7 @@
                         </div>
                     {% empty %}
                         <div class="bid-control">
-                            <p class="fw-bold btn btn-danger mb-3 px-3">No additional watchlist item</p>
+                            <p class=" btn btn-info mb-3 px-3">No additional watchlist item</p>
                         </div>
                     {% endfor %}
 
@@ -115,7 +115,7 @@
 
                             {% if request.user.id in item.commenters %}
                                 <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
-                                    <p class="btn btn-danger mb-3 px-3">You've already made a comment</p>
+                                    <p class="btn btn-success mb-3 px-3">You've already made a comment</p>
                                 </div>
                             {% elif request.user == item.listed_by %}
                                 <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
@@ -148,6 +148,9 @@
                                         </div>
                                     {% endif %}
                                 {% empty %}
+                                    <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
+                                        <p class="btn btn-info mb-3 px-3">No comments made on this listing</p>
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>

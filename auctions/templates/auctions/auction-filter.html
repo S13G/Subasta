@@ -29,7 +29,8 @@
                         <div class="d-grid gap-1 text-center text-white categories">
                             {% for category in categories %}
                                 <a class="my-2 mx-3 py-3 bg-secondary" data-bs-dismiss="offcanvas" aria-label="Close"
-                                   onclick="window.location=`{% url 'category-filter' category.slug %}`"><h5>{{ category.name }}</h5></a>
+                                   onclick="window.location=`{% url 'category-filter' category.slug %}`">
+                                    <h5>{{ category.name }}</h5></a>
                             {% endfor %}
                         </div>
 
@@ -60,7 +61,8 @@
                                 <div class="user d-flex align-items-center">
                                     <img src="{% static 'assets/images/auction-authr1.png' %}" alt="auction author"
                                          class="img-fluid me-3">
-                                    <p class="">By {{ item.listed_by.first_name.capitalize }} {{ item.listed_by.last_name.capitalize }}</p>
+                                    <p class="">
+                                        By {{ item.listed_by.first_name.capitalize }} {{ item.listed_by.last_name.capitalize }}</p>
                                 </div>
 
                                 <h4 class="text-danger">${{ item.price }}</h4>
@@ -93,7 +95,7 @@
                 </div>
             {% empty %}
                 <br>
-                <h4 class="text-danger fw-bold">No item under this category</h4>
+                <h4 class="text-info fw-bold">No item under this category</h4>
 
                 <!-- To Here ...Stop... then you can delete these from below... be sure to collapse the blocks to have a better view -->
 

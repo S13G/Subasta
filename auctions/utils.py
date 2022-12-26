@@ -1,9 +1,7 @@
 import random
 
-from django.contrib import messages
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404
 
-from auctions.forms import AuctionBidForm, CommentForm
 from auctions.models import Watchlist, AuctionItem
 
 

@@ -144,7 +144,7 @@ def closed_item_details(request, slug):
     all_comments = item.comments.all()
     try:
         item_winner = item.bids.last().bidder
-    except AuctionItem.DoesNotExist:
+    except:
         item_winner = None
     item_bidders = item.auction_item_bidders
     # if number of bids appearing in the template is more than 3, get the 3 latest bids
@@ -173,11 +173,11 @@ def auction_bid_form_in_item(request, item_slug):
 
             # checking if the bid price is less than the starting bid specified by the item owner
             if bid_price.bid <= item.starting_bid:
-                messages.info(request, "Your bid is less than the starting price or less than the other bidder's bid")
+                messages.error(request, "Your bid is less than the starting price")
             else:
                 # checking if the last bid before the new bid exists and if it's greater than the new bid made
                 if item.bids.exists() and item.bids.last().bid >= bid_price.bid:
-                    messages.info(request, "Bid a price larger than the previous bidder")
+                    messages.error(request, "Bid a price larger than the previous bidder")
                 else:
                     bid_price.save()
                     messages.success(request,

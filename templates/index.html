@@ -75,7 +75,7 @@
                             </div>
                             <div class="auction-action d-flex align-items-center justify-content-between">
 
-{#                                <button class="btn btn-md btn-danger">Place a Bid</button>#}
+                                {#                                <button class="btn btn-md btn-danger">Place a Bid</button>#}
                                 {% if not item|check_watchlist_item_existence:request %}
                                     <a href="{% url 'add-to-watchlist' item.id %}" class="btn btn-md btn-danger mb-3"
                                        id="liveToastBtn">Add to Watchlist</a>

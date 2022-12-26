@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('auctions', '0005_watchlist_unique_user_item_watchlist'),
     ]

@@ -5,8 +5,8 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 
-from users.models import User
 from users.decorators import login_excluded
+from users.models import User
 
 
 # Create your views here.
