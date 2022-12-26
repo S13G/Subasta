@@ -51,7 +51,7 @@ def auction_bid_form_in_item(request, slug):
         item = AuctionItem.objects.get(slug=slug, closed=False)
     except AuctionItem.DoesNotExist:
         raise Http404()
-    if request.user != item.listed_by and request.method == "POST":
+    if request.user != item.listed_by and request.method == "POST" and "auction-btn" in request.POST:
         auction_bid_form = AuctionBidForm(request.POST)
         if auction_bid_form.is_valid():
             bid_price = auction_bid_form.save(commit=False)
@@ -83,7 +83,7 @@ def comment_form_in_item(request, slug):
         item = AuctionItem.objects.get(slug=slug, closed=False)
     except AuctionItem.DoesNotExist:
         raise Http404()
-    if request.method == "POST":
+    if request.method == "POST" and "comment-btn" in request.POST:
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)

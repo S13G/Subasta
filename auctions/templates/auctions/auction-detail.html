@@ -28,22 +28,26 @@
                             class="bidding-price text-danger">${{ item.starting_bid }}</span></p>
                 </div>
                 <div class="bid-control bg-light pt-3 px-3">
-                    {% if not item.listed_by == request.user %}
+                    {% if item.listed_by == request.user %}
+                        <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
+                            <a href="{% url 'close-auction' item.slug %}" class="btn btn-danger mb-3 px-3">Close
+                                Auction</a>
+                        </div>
+                    {% elif item.listed_by != request.user %}
                         <form action="" class="d-grid gap-2" method="post">
                             {% csrf_token %}
                             <p class="fw-bold">Place your bid now</p>
                             <label>{{ auction_bid_form.bid.label }}</label>
                             {{ auction_bid_form.bid }}
                             <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
-                                <input type="submit" class="btn btn-success mb-3 px-3" value="Place bid">
+                                <input name="auction-btn" type="submit" class="btn btn-success mb-3 px-3"
+                                       value="Place bid">
                             </div>
                         </form>
-                    {% endif %}
-
-                    {% if item.listed_by == request.user %}
+                    {% else %}
                         <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
-                            <a href="{% url 'close-auction' item.slug %}" class="btn btn-danger mb-3 px-3">Close
-                                Auction</a>
+                            <a href="{% url 'close-auction' item.slug %}" class="btn btn-danger mb-3 px-3">Bid not
+                                possible</a>
                         </div>
                     {% endif %}
                 </div>
@@ -108,6 +112,7 @@
                             <div class="col-12">
                                 <h3>Comments</h3>
                             </div>
+
                             {% if request.user.id in item.commenters %}
                                 <div class="text-center d-grid d-lg-flex justify-content-lg-between justify-content-center">
                                     <p class="btn btn-danger mb-3 px-3">You've already made a comment</p>
@@ -122,8 +127,10 @@
                                     <div class="bid-control bg-light pt-3 px-3">
                                         {{ comment_form.body }}
                                         <div class="text-center pt-3 d-grid d-lg-flex justify-content-lg-between justify-content-center">
-                                            <input type="submit" class="btn btn-success mb-3 px-3" value="Comment">
+                                            <input name="comment-btn" type="submit" class="btn btn-success mb-3 px-3"
+                                                   value="Comment">
                                         </div>
+                                    </div>
                                 </form>
                             {% endif %}
 
