@@ -44,7 +44,8 @@ def category_view(request, slug):
 def item_details(request, slug):
     item, watchlist_items = watchlist_items_in_details(request, slug)
     auction_bid_form = auction_bid_form_in_item(request, slug)
-    comment_form, all_comments = comment_form_in_item(request, slug)
+    comment_form = comment_form_in_item(request, slug)
+    all_comments = item.comments.all()
     # if number of bids appearing in the template is more than 3, get the 3 latest bids
     previous_bids = AuctionBid.objects.filter(item=item).order_by("-created")
     if previous_bids.count() > 3:
@@ -138,9 +139,9 @@ def closed_category_view(request, slug):
 
 
 @login_required(login_url="login")
-def closed_item_details(request, slug, comments):
+def closed_item_details(request, slug):
     item, other_closed_item = closed_items_in_details(slug)
-    all_comments = comment_form_in_item(request, slug, comments)
+    all_comments = item.comments.all()
     try:
         item_winner = item.bids.last().bidder
     except AuctionItem.DoesNotExist:

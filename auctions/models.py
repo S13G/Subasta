@@ -56,6 +56,11 @@ class AuctionItem(models.Model):
         queryset = self.bids.all().values_list("bidder_id", flat=True)
         return queryset
 
+    @property
+    def commenters(self):
+        queryset = self.comments.all().values_list("owner_id", flat=True)
+        return queryset
+
 
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="watchlists")

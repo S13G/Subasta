@@ -100,6 +100,10 @@
 
                     <div class="col-md-8">
                         <div class="row mt-3">
+                            <div class="col-12">
+                                <h3>Comments</h3>
+                            </div>
+
                             <div class="comment">
                                 {% for comment in all_comments %}
                                     {% if comment.body %}
@@ -108,16 +112,12 @@
                                                  alt="auction author"
                                                  class="img-fluid me-3">
                                             <div class="comment__details">
-                                                <b><a href="#"
-                                                      class="comment__author">{{ comment.owner.first_name }} {{ comment.owner.last_name }}</a></b>
+                                                <b class="comment__author">{{ comment.owner.first_name }} {{ comment.owner.last_name }}</b>
                                                 <p class="comment__info">{{ comment.body|linebreaksbr }}</p>
                                             </div>
                                         </div>
                                     {% endif %}
                                 {% empty %}
-                                    <div class="bid-control">
-                                        <p class="fw-bold btn btn-danger mb-3 px-3">No Comment</p>
-                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -125,6 +125,5 @@
                 </div>
             </div>
         </div>
-    </div>
 
 {% endblock body %}
