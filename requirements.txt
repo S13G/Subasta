@@ -1,5 +1,16 @@
 asgiref==3.5.2
+beautifulsoup4==4.11.1
+colorama==0.4.6
+creategitignore==0.2.1
+dj-database-url==1.2.0
 Django==4.1.4
 django-autoslug==1.9.8
+django-jazzmin==2.6.0
+gunicorn==20.1.0
+Pillow==9.3.0
+psycopg2==2.9.5
+python-decouple==3.6
+soupsieve==2.3.2.post1
 sqlparse==0.4.3
-sweetify==2.3.1
+utils==1.0.1
+whitenoise==6.2.0
