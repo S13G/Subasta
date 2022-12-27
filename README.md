@@ -37,7 +37,7 @@ Subasta is built using
 
 - **BOOTSTRAP**
 
-  ![BOOTSTRAP](https://github.com/S13G/Connecto-API/blob/main/assets/rsz_drf.png)
+  ![BOOTSTRAP](https://github.com/S13G/Subasta/blob/main/static/tools/bootstrap-transformed.png)
 
 - **MARIA DB (database used)**
 
