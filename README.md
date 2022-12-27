@@ -71,6 +71,6 @@ Then run the python server with the command
 
 ### Preview
 
-![SUBASTA image 1](https://github.com/S13G/Connecto-API/blob/main/assets/Screenshot%20from%202022-10-11%2015-53-33.png)
+![SUBASTA image 1](https://github.com/S13G/Subasta/blob/main/static/tools/Screenshot1.png)
 
-![SUBASTA image 2]()
+![SUBASTA image 2](https://github.com/S13G/Subasta/blob/main/static/tools/Screenshot2.png)
