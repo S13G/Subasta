@@ -25,15 +25,15 @@ Subasta is built using
 
 - **HTML**
 
-  ![HTML](https://github.com/S13G/Connecto-API/blob/main/assets/duffel.png)
+  ![HTML](https://github.com/S13G/Subasta/blob/main/static/tools/rsz_html.png)
 
 - **CSS**
 
-  ![CSS](https://github.com/S13G/Connecto-API/blob/main/assets/rsz_django.png)
+  ![CSS](https://github.com/S13G/Subasta/blob/main/static/tools/rsz_css.png)
 
 - **DJANGO**
   
-  ![DJANGO]()
+  ![DJANGO](https://github.com/S13G/Subasta/blob/main/static/tools/rsz_django.png)
 
 - **BOOTSTRAP**
 
@@ -41,11 +41,11 @@ Subasta is built using
 
 - **MARIA DB (database used)**
 
-  ![MARIADB](https://github.com/S13G/Connecto-API/blob/main/assets/rsz_mariadb.png)
+  ![MARIADB](https://github.com/S13G/Subasta/blob/main/static/tools/rsz_mariadb.png)
 
 - **JAVASCRIPT**
 
-  ![REACT](https://github.com/S13G/Connecto-API/blob/main/assets/rsz_react.png)
+  ![JAVASCRIPT](https://github.com/S13G/Subasta/blob/main/static/tools/rsz_js.png)
 
 ### Installation
 

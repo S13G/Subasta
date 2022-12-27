@@ -1,2 +1,1 @@
-python manage.py migrate
-web: gunicorn commerce.wsgi --log-file -
+web: python manage.py migrate && gunicorn commerce.wsgi

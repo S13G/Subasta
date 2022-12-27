@@ -9,10 +9,6 @@ a {
     text-decoration: none;
 }
 
-#fixed-top-bar {
-    z-index: 0;
-}
-
 .navbar-nav li a {
     color: #000 !important;
 }
@@ -20,6 +16,7 @@ a {
 .navbar {
     z-index: 9999;
 }
+
 
 li {
     list-style: none;
