@@ -15,6 +15,7 @@ def watchlist_count(request):
 
 @register.filter
 def check_watchlist_item_existence(item, request):
+    # check item existence
     item = Watchlist.objects.filter(item=item, user=request.user)
     if item.exists():
         return True

@@ -11,7 +11,7 @@ from auctions.utils import watchlist_items_in_details, closed_items_in_details
 
 
 def home(request):
-    # selects and displays 6 random items on the main page
+    # this function selects and displays 6 random items on the main page
     featured_items = AuctionItem.objects.select_related('category').order_by("-id").all().exclude(closed=True)
     count = 6
     if featured_items.count() < 6:
@@ -22,6 +22,7 @@ def home(request):
 
 
 def all_auctions(request):
+    # this function handles all categories and active listings
     categories = Category.objects.all()
     items = AuctionItem.objects.all().exclude(closed=True)
     context = {"categories": categories, "items": items}
@@ -29,6 +30,7 @@ def all_auctions(request):
 
 
 def category_view(request, slug):
+    # this function returns item filtered by their category
     categories = Category.objects.all()
     try:
         category = categories.get(slug=slug)
@@ -41,6 +43,7 @@ def category_view(request, slug):
 
 @login_required(login_url="login")
 def item_details(request, slug):
+    # handles the item details, auction and comment form including the logic
     item, watchlist_items = watchlist_items_in_details(request, slug)
     auction_bid_form = AuctionBidForm()
     all_comments = item.comments.all()
@@ -58,6 +61,7 @@ def item_details(request, slug):
 
 @login_required(login_url="login")
 def watchlist_item(request):
+    # displays th watchlist items of each user
     owner = request.user
     watchlist_items = Watchlist.objects.filter(user=owner)
     context = {"watchlist_items": watchlist_items, "owner": owner}
@@ -66,6 +70,7 @@ def watchlist_item(request):
 
 @login_required(login_url="login")
 def add_to_watchlist(request, item_id):
+    # adds a particular item to a user's watchlist
     item = get_object_or_404(AuctionItem, id=item_id, closed=False)
     Watchlist.objects.get_or_create(user=request.user, item=item)
     messages.info(request, "{} has been added to watchlist".format(item.name))
@@ -74,6 +79,7 @@ def add_to_watchlist(request, item_id):
 
 @login_required(login_url="login")
 def remove_from_watchlist(request, item_id):
+    # removes a particular item to a user's watchlist
     item = get_object_or_404(Watchlist, id=item_id)
     # if item belongs to the current authenticated user, remove it
     if item.user == request.user:
@@ -84,6 +90,7 @@ def remove_from_watchlist(request, item_id):
 
 @login_required(login_url="login")
 def create_listing(request):
+    # handles the creation of a new auction item by the user
     owner = request.user
 
     if request.method == "POST":
@@ -105,7 +112,9 @@ def create_listing(request):
 
 @login_required(login_url="login")
 def close_auction(request, slug):
+    # handles the closing of an auction
     item = get_object_or_404(AuctionItem, slug=slug, closed=False)
+    # if bids exists for the item and the logged in user is the lister, auction can be closed
     if item.bids.exists() and item.listed_by == request.user:
         last_bidder = f"{item.bids.last().bidder.first_name} {item.bids.last().bidder.last_name}"
         item.closed = True
@@ -120,6 +129,7 @@ def close_auction(request, slug):
 
 @login_required(login_url="login")
 def closed_listings(request):
+    # displays all closed items
     categories = Category.objects.all()
     closed_items = AuctionItem.objects.filter(closed=True)
     context = {"closed_items": closed_items, "categories": categories}
@@ -128,6 +138,7 @@ def closed_listings(request):
 
 @login_required(login_url="login")
 def closed_category_view(request, slug):
+    # displays the closed items filtered by their category
     categories = Category.objects.all()
     try:
         category = categories.get(slug=slug)
@@ -140,8 +151,10 @@ def closed_category_view(request, slug):
 
 @login_required(login_url="login")
 def closed_item_details(request, slug):
+    # handles closed item details and comments
     item, other_closed_item = closed_items_in_details(slug)
     all_comments = item.comments.all()
+    # if bids exist, the last bidder is the winner
     try:
         item_winner = item.bids.last().bidder
     except:
@@ -160,6 +173,7 @@ def closed_item_details(request, slug):
 # passes the url of the view in the action of the form template
 @login_required(login_url="login")
 def auction_bid_form_in_item(request, item_slug):
+    # handles the place bid form in the item
     try:
         item = AuctionItem.objects.get(slug=item_slug, closed=False)
     except AuctionItem.DoesNotExist:
@@ -188,10 +202,10 @@ def auction_bid_form_in_item(request, item_slug):
         messages.error(request, "Bid wasn't successful, Try again")
 
 
-# this function handles the comment form view
-# passes the url of the view in the action of the form template
 @login_required(login_url="login")
 def comment_form_in_item(request, item_slug):
+    # this function handles the comment form view
+    # passes the url of the view in the action of the form template
     try:
         item = AuctionItem.objects.get(slug=item_slug, closed=False)
     except AuctionItem.DoesNotExist:

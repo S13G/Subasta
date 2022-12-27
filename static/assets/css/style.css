@@ -1,10 +1,10 @@
 
-*{
+* {
     box-sizing: border-box;
     /* border: 1px solid black; */
 }
 
-a{
+a {
     color: unset;
     text-decoration: none;
 }
@@ -13,19 +13,23 @@ a{
     z-index: 0;
 }
 
-.navbar-nav li a{
+.navbar-nav li a {
     color: #000 !important;
 }
 
-li{
+.navbar {
+    z-index: 9999;
+}
+
+li {
     list-style: none;
 }
 
-.explore{
+.explore {
     padding: 10px 20px !important;
 }
 
-.card-props{
+.card-props {
     background-image: url('../images/cars.png');
     background-repeat: no-repeat;
     background-position: center;
@@ -33,68 +37,69 @@ li{
     border-radius: 15px;
 }
 
-.auction, .auction-photo img, .auction-time{
+.auction, .auction-photo img, .auction-time {
     border-radius: 15px;
 
 }
 
-.auction-photo:hover{
+.auction-photo:hover {
     transform: scale(1.05);
-    
+
 }
 
-.auction-photo{
+.auction-photo {
     transition-duration: 1.5;
     transition-property: all;
 }
 
-.auction-time{
+.auction-time {
     transform: translateY(-50%);
     width: 65%;
     position: relative;
 }
 
-.testimonial{
+.testimonial {
     background: #fff;
     box-shadow: 5px 2px 20px rgb(0 0 0 / 4%);
 }
 
-.test-desc img, .upcoming-author img{
+.test-desc img, .upcoming-author img {
     border-radius: 50%;
 }
 
-.upcoming-timer div{
+.upcoming-timer div {
     border: 1px solid white;
     border-radius: 12px;
     padding: 10px;
     transform: scale(.9);
 }
 
-.upcoming-timer{
+.upcoming-timer {
     margin-top: -60px;
     position: relative;
 }
-.upcoming-item{
+
+.upcoming-item {
     border-radius: 15px;
 }
 
-.trustees{
-    background: rgba(249,57,95,.1);
+.trustees {
+    background: rgba(249, 57, 95, .1);
 }
 
-.footer{
+.footer {
     margin-top: 150px !important;
 }
 
-.signup-form, .login-form{
+.signup-form, .login-form {
     box-shadow: 5px 2px 20px rgb(0 0 0 / 4%);
 }
 
-.categories a{
+.categories a {
     border-radius: 10px;
 }
 
-.fa-naira-sign{
+.fa-naira-sign {
     position: absolute;
     margin-left: 20px;
 }
