@@ -47,7 +47,7 @@ class AuctionItem(models.Model):
     def image_url(self):
         try:
             url = self.image.url
-        except IntegrityError:
+        except:
             url = ''
         return url
 
