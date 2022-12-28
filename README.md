@@ -65,6 +65,20 @@ below:
 
 All packages should install without errors.
 
+After package installation, generate a secret key in your terminal with the command below
+
+```
+from django.core.management.utils import get_random_secret_key
+
+print(get_random_secret_key())
+```
+
+This generates a secret key. Copy the key
+
+Create a ```.env``` file in the product directory
+
+Input ```SECRET_KEY=<secret key copied from terminal>```
+
 Then run the python server with the command
 
 ```python3 manage.py runserver```
