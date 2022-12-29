@@ -2,6 +2,7 @@ import random
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, reverse, get_object_or_404, redirect
 
@@ -221,3 +222,19 @@ def comment_form_in_item(request, item_slug):
         else:
             messages.info(request, "Error processing request")
         return redirect(f'/listings/item/{item.slug}/')
+
+
+def search(request):
+    categories = Category.objects.all()
+    results = []
+    if request.method == "GET":
+        search_query = request.GET.get("search-query")
+        if search_query == "":
+            search_query = 'None'
+            messages.info(request, "Empty search query")
+        results = AuctionItem.objects.filter(Q(name__icontains=search_query) | Q(price__icontains=search_query) |
+                                             Q(listed_by__first_name__icontains=search_query) |
+                                             Q(listed_by__last_name__icontains=search_query) |
+                                             Q(description__icontains=search_query), closed=False)
+    context = {"search_query": search_query, "results": results, "categories": categories}
+    return render(request, "auctions/search-items.html", context)
