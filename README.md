@@ -21,7 +21,7 @@ Subasta is built using
 
 - **PYTHON**
 
-  ![PYTHON](https://github.com/S13G/Connecto-API/blob/main/assets/rsz_python.png)
+  ![PYTHON](https://github.com/S13G/Subasta/blob/main/static/tools/rsz_python.png)
 
 - **HTML**
 
