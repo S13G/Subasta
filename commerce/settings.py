@@ -162,11 +162,11 @@ POSTGRESQL_ADDON_USER = config("POSTGRESQL_ADDON_USER")
 
 STATIC_URL_PREFIX = config("STATIC_URL_PREFIX")
 
-MEDIA_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/storage/'
+MEDIA_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/images/'
 
-MEDIA_URL = config('STATIC_URL_PREFIX') + "/storage/"
+MEDIA_URL = config('STATIC_URL_PREFIX') + "/images/"
 
-STATIC_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/static/static/'
+STATIC_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/static'
 
 
 DATABASES = {
