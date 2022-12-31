@@ -34,4 +34,5 @@ submit50==3.1.1
 termcolor==1.1.0
 urllib3==1.26.13
 utils==1.0.1
+wheel==0.38.4
 whitenoise==6.2.0
