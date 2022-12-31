@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['web-production-b183.up.railway.app', '127.0.0.1']
+ALLOWED_HOSTS = ['web-production-b183.up.railway.app', 'e-subasta.cleverapps.io', '127.0.0.1']
 
 # Application definition
 

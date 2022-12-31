@@ -17,5 +17,6 @@ urlpatterns = [
     path("closed_listings/item/<slug:slug>/", views.closed_item_details, name="closed-item-details"),
     path("comment/<slug:item_slug>/", views.comment_form_in_item, name="comment"),
     path("auction/<slug:item_slug>/", views.auction_bid_form_in_item, name="auction_bid"),
-    path("search/", views.search, name="search"),
+    # path("search/", views.search, name="search"),
+    # path("closed_search/", views.search, name="closed-search"),
 ]
