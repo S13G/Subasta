@@ -30,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['web-production-b183.up.railway.app', 'e-subasta.cleverapps.io', '127.0.0.1']
+ALLOWED_HOSTS = ['web-production-68b1.up.railway.app', 'e-subasta.cleverapps.io', '127.0.0.1']
 
 # Application definition
 
@@ -56,7 +56,7 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-b183.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-68b1.up.railway.app']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
