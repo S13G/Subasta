@@ -16,6 +16,7 @@ eggs/
 lib/
 lib64/
 parts/
+sdist/
 var/
 wheels/
 share/python-wheels/
@@ -120,6 +121,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.vscode
 env/
 venv/
 ENV/
