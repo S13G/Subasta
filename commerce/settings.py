@@ -162,12 +162,11 @@ POSTGRESQL_ADDON_USER = config("POSTGRESQL_ADDON_USER")
 
 STATIC_URL_PREFIX = config("STATIC_URL_PREFIX")
 
-MEDIA_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/images/'
+MEDIA_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/images/'  # where uploaded images will be stored
 
-MEDIA_URL = config('STATIC_URL_PREFIX') + "/images/"
+MEDIA_URL = config('STATIC_URL_PREFIX') + "/images/"    # image uploaded urls
 
-STATIC_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX")
-
+STATIC_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/static'
 
 DATABASES = {
     'default': {
@@ -183,7 +182,6 @@ DATABASES = {
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
-
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
