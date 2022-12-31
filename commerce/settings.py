@@ -162,7 +162,7 @@ POSTGRESQL_ADDON_USER = config("POSTGRESQL_ADDON_USER")
 
 STATIC_URL_PREFIX = config("STATIC_URL_PREFIX")
 
-MEDIA_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/images/'  # where uploaded images will be stored
+MEDIA_ROOT = config("APP_HOME") + config("STATIC_FILES_PATH") + '/images/'  # where uploaded images will be stored
 
 MEDIA_URL = config('STATIC_URL_PREFIX') + "/images/"    # image uploaded urls
 
