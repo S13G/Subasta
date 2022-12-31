@@ -33,18 +33,27 @@ ALLOWED_HOSTS = ['web-production-b183.up.railway.app', 'e-subasta.cleverapps.io'
 
 # Application definition
 
-INSTALLED_APPS = [
-    'auctions',
-    'users',
-    'jazzmin',
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary'
 ]
+
+THIRD_PARTY_APPS = [
+    'cloudinary',
+    'jazzmin',
+]
+
+LOCAL_APPS = [
+    'auctions',
+    'users',
+
+]
+
+INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-b183.up.railway.app']
 
@@ -136,10 +145,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/')]
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
-# MEDIA_URL = '/images/'
-#
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -240,36 +245,3 @@ JAZZMIN_SETTINGS = {
     # override change forms on a per modeladmin basis
     "changeform_format_overrides": {"accounts.user": "collapsible", "accounts.group": "vertical_tabs"},
 }
-
-
-# POSTGRESQL_ADDON_URI = config("POSTGRESQL_ADDON_URI")
-#
-# POSTGRESQL_ADDON_PORT = config("POSTGRESQL_ADDON_PORT")
-#
-# POSTGRESQL_ADDON_HOST = config("POSTGRESQL_ADDON_HOST")
-#
-# POSTGRESQL_ADDON_DB = config("POSTGRESQL_ADDON_DB")
-#
-# POSTGRESQL_ADDON_PASSWORD = config("POSTGRESQL_ADDON_PASSWORD")
-#
-# POSTGRESQL_ADDON_USER = config("POSTGRESQL_ADDON_USER")
-
-# STATIC_URL_PREFIX = config("STATIC_URL_PREFIX")
-
-# MEDIA_ROOT = config("APP_HOME") + config("STATIC_FILES_PATH") + '/images/'  # where uploaded images will be stored
-#
-# MEDIA_URL = config('STATIC_URL_PREFIX') + "/images/"    # image uploaded urls
-#
-# STATIC_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/static'
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': POSTGRESQL_ADDON_DB,
-#         'USER': POSTGRESQL_ADDON_USER,
-#         'PASSWORD': POSTGRESQL_ADDON_PASSWORD,
-#         'HOST': POSTGRESQL_ADDON_HOST,
-#         'PORT': POSTGRESQL_ADDON_PORT,
-#         'CONN_MAX_AGE': 5,
-#     }
-# }
