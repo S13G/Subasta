@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['e-subasta.cleverapps.io', '127.0.0.1']
 
@@ -145,6 +145,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/')]
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_URL_PREFIX = config("STATIC_URL_PREFIX")
+
+STATIC_FILES_PATH = config("STATIC_FILES_PATH")
 
 # CLOUDINARY
 cloudinary.config(
