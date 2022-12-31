@@ -166,7 +166,7 @@ MEDIA_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/images/'
 
 MEDIA_URL = config('STATIC_URL_PREFIX') + "/images/"
 
-STATIC_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/static'
+STATIC_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX")
 
 
 DATABASES = {
