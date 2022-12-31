@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic'
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-b183.up.railway.app']
