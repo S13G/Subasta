@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-import dj_database_url
+import cloudinary
+import cloudinary.api
+import cloudinary.uploader
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary'
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-b183.up.railway.app']
@@ -77,26 +80,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'commerce.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.POSTGRESQL',
-#         'NAME': config("POSTGRESQL_ADDON_DB"),
-#         'USER': config("POSTGRESQL_ADDON_USER"),
-#         'PASSWORD': config("POSTGRESQL_ADDON_PASSWORD"),
-#         'HOST': config("POSTGRESQL_ADDON_HOST"),
-#         'PORT': config("POSTGRESQL_ADDON_PORT"),
-#         'CONN_MAX_AGE': 5,
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config("POSTGRESQL_ADDON_DB"),
+        'USER': config("POSTGRESQL_ADDON_USER"),
+        'PASSWORD': config("POSTGRESQL_ADDON_PASSWORD"),
+        'HOST': config("POSTGRESQL_ADDON_HOST"),
+        'PORT': config("POSTGRESQL_ADDON_PORT"),
+        'CONN_MAX_AGE': 5,
+    }
+}
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -136,52 +131,24 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/')]
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-# 
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 # MEDIA_URL = '/images/'
-# 
+#
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-POSTGRESQL_ADDON_URI = config("POSTGRESQL_ADDON_URI")
-
-POSTGRESQL_ADDON_PORT = config("POSTGRESQL_ADDON_PORT")
-
-POSTGRESQL_ADDON_HOST = config("POSTGRESQL_ADDON_HOST")
-
-POSTGRESQL_ADDON_DB = config("POSTGRESQL_ADDON_DB")
-
-POSTGRESQL_ADDON_PASSWORD = config("POSTGRESQL_ADDON_PASSWORD")
-
-POSTGRESQL_ADDON_USER = config("POSTGRESQL_ADDON_USER")
-
-STATIC_URL_PREFIX = config("STATIC_URL_PREFIX")
-
-MEDIA_ROOT = config("APP_HOME") + config("STATIC_FILES_PATH") + '/images/'  # where uploaded images will be stored
-
-MEDIA_URL = config('STATIC_URL_PREFIX') + "/images/"    # image uploaded urls
-
-STATIC_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/static'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': POSTGRESQL_ADDON_DB,
-        'USER': POSTGRESQL_ADDON_USER,
-        'PASSWORD': POSTGRESQL_ADDON_PASSWORD,
-        'HOST': POSTGRESQL_ADDON_HOST,
-        'PORT': POSTGRESQL_ADDON_PORT,
-        'CONN_MAX_AGE': 5,
-    }
-}
-
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# CLOUDINARY
+cloudinary.config(
+    cloud_name=config('CLOUDINARY_CLOUD_NAME'),
+    api_key=config('CLOUDINARY_API_KEY'),
+    api_secret=config('CLOUDINARY_API_SECRET')
+)
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
@@ -273,3 +240,36 @@ JAZZMIN_SETTINGS = {
     # override change forms on a per modeladmin basis
     "changeform_format_overrides": {"accounts.user": "collapsible", "accounts.group": "vertical_tabs"},
 }
+
+
+# POSTGRESQL_ADDON_URI = config("POSTGRESQL_ADDON_URI")
+#
+# POSTGRESQL_ADDON_PORT = config("POSTGRESQL_ADDON_PORT")
+#
+# POSTGRESQL_ADDON_HOST = config("POSTGRESQL_ADDON_HOST")
+#
+# POSTGRESQL_ADDON_DB = config("POSTGRESQL_ADDON_DB")
+#
+# POSTGRESQL_ADDON_PASSWORD = config("POSTGRESQL_ADDON_PASSWORD")
+#
+# POSTGRESQL_ADDON_USER = config("POSTGRESQL_ADDON_USER")
+
+# STATIC_URL_PREFIX = config("STATIC_URL_PREFIX")
+
+# MEDIA_ROOT = config("APP_HOME") + config("STATIC_FILES_PATH") + '/images/'  # where uploaded images will be stored
+#
+# MEDIA_URL = config('STATIC_URL_PREFIX') + "/images/"    # image uploaded urls
+#
+# STATIC_ROOT = config("APP_HOME") + config("STATIC_URL_PREFIX") + '/static'
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': POSTGRESQL_ADDON_DB,
+#         'USER': POSTGRESQL_ADDON_USER,
+#         'PASSWORD': POSTGRESQL_ADDON_PASSWORD,
+#         'HOST': POSTGRESQL_ADDON_HOST,
+#         'PORT': POSTGRESQL_ADDON_PORT,
+#         'CONN_MAX_AGE': 5,
+#     }
+# }
