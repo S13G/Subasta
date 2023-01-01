@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['e-subasta.cleverapps.io', '127.0.0.1']
 
@@ -57,7 +57,7 @@ INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,19 +86,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'commerce.wsgi.application'
 
-# Database
-
+# Local DB
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config("POSTGRESQL_ADDON_DB"),
-        'USER': config("POSTGRESQL_ADDON_USER"),
-        'PASSWORD': config("POSTGRESQL_ADDON_PASSWORD"),
-        'HOST': config("POSTGRESQL_ADDON_HOST"),
-        'PORT': config("POSTGRESQL_ADDON_PORT"),
-        'CONN_MAX_AGE': 5,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
+# Online DB
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config("POSTGRESQL_ADDON_DB"),
+#         'USER': config("POSTGRESQL_ADDON_USER"),
+#         'PASSWORD': config("POSTGRESQL_ADDON_PASSWORD"),
+#         'HOST': config("POSTGRESQL_ADDON_HOST"),
+#         'PORT': config("POSTGRESQL_ADDON_PORT"),
+#         'CONN_MAX_AGE': 5,
+#     }
+# }
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -144,11 +153,16 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/')]
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
+MEDIA_URL = '/images/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images/')
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_URL_PREFIX = config("STATIC_URL_PREFIX")
-
-STATIC_FILES_PATH = config("STATIC_FILES_PATH")
+# Fo r Deployment
+# STATIC_URL_PREFIX = config("STATIC_URL_PREFIX")
+#
+# STATIC_FILES_PATH = config("STATIC_FILES_PATH")
 
 # CLOUDINARY
 cloudinary.config(

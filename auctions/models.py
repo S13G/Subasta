@@ -1,7 +1,7 @@
 import uuid
 
 from autoslug import AutoSlugField
-from cloudinary.models import CloudinaryField
+# from cloudinary.models import CloudinaryField
 from django.core.validators import MinValueValidator
 from django.db import models, IntegrityError
 
@@ -25,7 +25,8 @@ class AuctionItem(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", always_update=True, unique=True)
-    image = CloudinaryField('items', null=True, blank=True)
+    # image = CloudinaryField('items', null=True, blank=True)
+    image = models.ImageField(default='default.jpg', blank=True, null=True)
     image_link = models.URLField(max_length=300, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, default=None, related_name="items")
     description = models.TextField()
