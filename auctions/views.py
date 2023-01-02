@@ -64,18 +64,18 @@ def item_details(request, slug):
 def watchlist_item(request):
     # displays th watchlist items of each user
     owner = request.user
-    results = []
     watchlist_items = Watchlist.objects.filter(user=owner)
+    results = []
     if request.method == "GET":
-        search_query = request.GET.get("watchlist-search-query")
-        if search_query == "":
-            search_query = 'None'
-            messages.info(request, "Empty search query")
-        results = Watchlist.objects.filter(Q(name__icontains=search_query) | Q(price__icontains=search_query) |
-                                           Q(listed_by__first_name__icontains=search_query) |
-                                           Q(listed_by__last_name__icontains=search_query) |
-                                           Q(description__icontains=search_query))
-    context = {"watchlist_items": watchlist_items, "owner": owner, "watchlist-search_query": search_query, "results": results}
+        watchlist_search_query = request.GET.get("watchlist-search-query")
+        if watchlist_search_query is not None:
+            results = watchlist_items.filter(
+                Q(item__name__icontains=watchlist_search_query) | Q(item__price__icontains=watchlist_search_query) |
+                Q(item__listed_by__first_name__icontains=watchlist_search_query) |
+                Q(item__listed_by__last_name__icontains=watchlist_search_query) |
+                Q(item__description__icontains=watchlist_search_query))
+    context = {"watchlist_items": watchlist_items, "owner": owner, "results": results,
+               "watchlist_search_query": watchlist_search_query}
     return render(request, "auctions/watchlist.html", context)
 
 
@@ -143,7 +143,17 @@ def closed_listings(request):
     # displays all closed items
     categories = Category.objects.all()
     closed_items = AuctionItem.objects.filter(closed=True)
-    context = {"closed_items": closed_items, "categories": categories}
+    results = []
+    if request.method == "GET":
+        closed_search_query = request.GET.get("closed-search-query")
+        if closed_search_query is not None:
+            results = AuctionItem.objects.filter(
+                Q(name__icontains=closed_search_query) | Q(price__icontains=closed_search_query) |
+                Q(listed_by__first_name__icontains=closed_search_query) |
+                Q(listed_by__last_name__icontains=closed_search_query) |
+                Q(description__icontains=closed_search_query), closed=True)
+    context = {"closed_items": closed_items, "categories": categories, "closed_search_query": closed_search_query,
+               "results": results}
     return render(request, "auctions/closed-listings.html", context)
 
 
@@ -240,28 +250,13 @@ def search(request):
     search_query = None
     if request.method == "GET":
         search_query = request.GET.get("search-query")
-        if search_query == "":
+        if search_query is not None:
+            results = AuctionItem.objects.filter(Q(name__icontains=search_query) | Q(price__icontains=search_query) |
+                                                 Q(listed_by__first_name__icontains=search_query) |
+                                                 Q(listed_by__last_name__icontains=search_query) |
+                                                 Q(description__icontains=search_query), closed=False)
+        else:
             search_query = 'None'
             messages.info(request, "Empty search query")
-        results = AuctionItem.objects.filter(Q(name__icontains=search_query) | Q(price__icontains=search_query) |
-                                             Q(listed_by__first_name__icontains=search_query) |
-                                             Q(listed_by__last_name__icontains=search_query) |
-                                             Q(description__icontains=search_query), closed=False)
-    context = {"search_query": search_query, "results": results, "categories": categories}
-    return render(request, "auctions/search-items.html", context)
-
-
-def closed_search(request):
-    categories = Category.objects.all()
-    results = []
-    if request.method == "GET":
-        search_query = request.GET.get("closed-search-query")
-        if search_query == "":
-            search_query = 'None'
-            messages.info(request, "Empty search query")
-        results = AuctionItem.objects.filter(Q(name__icontains=search_query) | Q(price__icontains=search_query) |
-                                             Q(listed_by__first_name__icontains=search_query) |
-                                             Q(listed_by__last_name__icontains=search_query) |
-                                             Q(description__icontains=search_query), closed=True)
     context = {"search_query": search_query, "results": results, "categories": categories}
     return render(request, "auctions/search-items.html", context)

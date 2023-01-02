@@ -13,8 +13,10 @@
                 <!-- Search -->
                 <div class="row pt-5">
                     <form class="form-inline" method="get" action="{% url 'search' %}">
-                        <input class="form-control mr-sm-0" type="search" name="search-query" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" name="search-btn" type="submit">Search</button>
+                        <input class="form-control mr-sm-0" type="search" name="search-query" placeholder="Search"
+                               aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" name="search-btn" type="submit">Search
+                        </button>
                     </form>
                 </div>
 
@@ -83,6 +85,10 @@
                             </div>
                             <div class="auction-action d-flex align-items-center justify-content-start">
                                 <div class="cta text-start d-grid me-auto">
+                                {% if item.watchlist_set.count != 0 %}
+                                    <p class="text-danger">{{ item.watchlist_set.count }} watching</p>
+                                {% endif %}
+
                                     <!-- if item does not exist in watchlist, show add to watchlist button -->
                                     {% if not item|check_watchlist_item_existence:request %}
                                         <a href="{% url 'add-to-watchlist' item.id %}"
