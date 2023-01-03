@@ -127,8 +127,10 @@ def close_auction(request, slug):
     item = get_object_or_404(AuctionItem, slug=slug, closed=False)
     # if bids exists for the item and the logged in user is the lister, auction can be closed
     if item.bids.exists() and item.listed_by == request.user:
-        last_bidder = f"{item.bids.last().bidder.first_name} {item.bids.last().bidder.last_name}"
+        winner = item.bids.last().bidder
+        last_bidder = f"{winner.first_name} {winner.last_name}"
         item.closed = True
+        item.winner = winner
         messages.success(request, "You closed an auction on {} and {} won the auction".format(item.name, last_bidder))
         item.save()
     else:
@@ -143,6 +145,12 @@ def closed_listings(request):
     # displays all closed items
     categories = Category.objects.all()
     closed_items = AuctionItem.objects.filter(closed=True)
+    # for item in closed_items:
+    #     item_winner = item.bids.last().bidder
+    #     if request.user == item_winner:
+    #         total_items_won = item.
+    #         # print(total_items_won)
+    #         pass
     results = []
     if request.method == "GET":
         closed_search_query = request.GET.get("closed-search-query")
@@ -215,6 +223,7 @@ def auction_bid_form_in_item(request, item_slug):
                     messages.error(request, "Bid a price larger than the previous bidder")
                 else:
                     bid_price.save()
+
                     messages.success(request,
                                      "You've successfully placed a bid of ${} on {}".format(bid_price.bid,
                                                                                             bid_price.item.name))
@@ -261,3 +270,14 @@ def search(request):
             messages.info(request, "Empty search query")
     context = {"search_query": search_query, "results": results, "categories": categories}
     return render(request, "auctions/search-items.html", context)
+
+
+@login_required(login_url='login')
+def dashboard(request):
+    total_items_won = request.user.items_won.all().count()
+    total_items_listed = request.user.item.count()
+    total_items_closed = AuctionItem.objects.filter(closed=True, listed_by=request.user).count()
+    total_watchlist_items = request.user.watchlists.count()
+    context = {"total_items_won": total_items_won, "total_items_listed": total_items_listed,
+               "total_items_closed": total_items_closed, "total_watchlist_items": total_watchlist_items}
+    return render(request, "auctions/dashboard.html", context)

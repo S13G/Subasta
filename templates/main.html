@@ -58,12 +58,13 @@
                     </li>
 
                     </ul>
-
-                    <div class="top-control d-flex text-danger">
-                        <a href="#">
-                            <button class="btn btn-md btn-danger my-3 mt-md-0">My Dashboard</button>
-                        </a>
-                    </div>
+                    {% block dashboard %}
+                        <div class="top-control d-flex text-danger">
+                            <a href="{% url 'dashboard' %}">
+                                <button class="btn btn-md btn-danger my-3 mt-md-0">My Dashboard</button>
+                            </a>
+                        </div>
+                    {% endblock dashboard %}
                 {% else %}
                     <li class="nav-item mx-2">
                         <!-- same as auction details -->
@@ -110,11 +111,10 @@
                 <h4 class="mb-4">Important Links</h4>
 
                 <div class="important-links d-grid gap-3">
-                    <a href="">All Products</a>
+                    <a href="{% url 'listings' %}">All Products</a>
                     <a href="">How It Works</a>
                     <a href="">My Account</a>
                     <a href="">About Company</a>
-                    <a href="">Our News Feed</a>
                 </div>
             </div>
         </div>

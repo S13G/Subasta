@@ -19,4 +19,5 @@ urlpatterns = [
     path("auction/<slug:item_slug>/", views.auction_bid_form_in_item, name="auction_bid"),
     path("search/", views.search, name="search"),
     path("closed_search/", views.search, name="closed-search"),
+    path("dashboard/", views.dashboard, name="dashboard"),
 ]
