@@ -62,7 +62,7 @@ def item_details(request, slug):
 
 @login_required(login_url="login")
 def watchlist_item(request):
-    # displays th watchlist items of each user
+    # displays the watchlist items of each user and filter by search
     owner = request.user
     watchlist_items = Watchlist.objects.filter(user=owner)
     results = []
@@ -244,6 +244,7 @@ def comment_form_in_item(request, item_slug):
         return redirect(f'/listings/item/{item.slug}/')
 
 
+# search function for the all listings page
 def search(request):
     categories = Category.objects.all()
     results = []

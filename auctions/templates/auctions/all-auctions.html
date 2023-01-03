@@ -85,6 +85,7 @@
                             </div>
                             <div class="auction-action d-flex align-items-center justify-content-start">
                                 <div class="cta text-start d-grid me-auto">
+                                <!-- item watchers -->
                                 {% if item.watchlist_set.count != 0 %}
                                     <p class="text-danger">{{ item.watchlist_set.count }} watching</p>
                                 {% endif %}

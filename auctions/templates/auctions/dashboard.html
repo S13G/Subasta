@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+
+
+    <title>Sieg's Auction House</title>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-light fixed-top fs-6">
+      <div class="container-fluid mx-4  d-flex justify-content-space-evenly">
+        <a class="navbar-brand me-auto" href="#"><img src="./assets/images/header-logo2.png" alt="logo" class="img-fluid"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item mx-2">
+              <a class="nav-link active" href="./index.html">Home</a>
+            </li>
+            
+            <li class="nav-item mx-2">
+              <!-- same as auction details -->
+              <a class="nav-link" href="./all-auctions.html">Active Listings</a>
+            </li>
+            <li class="nav-item mx-2">
+              <!-- same as auction details -->
+              <a class="nav-link" href="./login.html">Login</a>
+            </li>
+            <li class="nav-item mx-2">
+              <!-- same as auction details -->
+              <a class="nav-link" href="./signup.html">Signup</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" href="./watchlist.html">Watch List</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" href="./additem.html">Create Listing</a>
+            </li>
+
+
+          </ul>
+          
+          <div class="top-control d-flex text-danger">
+            <a href="./dashboard.html">
+              
+              <button class="btn btn-md btn-danger my-3 mt-md-0">My Dashboard</button>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="container-fluid bg-primary py-5 text-white">
+        <div class="row pt-5">
+            <div class="col-12 col-lg-10">
+                <h1 class="display-5 fw-bold ms-0 ps-0 ms-md-5 ps-md-5 pt-3">Dashboard</h1>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="container">
+            <div class="row py-5 ">
+                <div class="col-12 col-md-3">
+                    <div class="col dashboard-list py-3 px-4 bg-success my-3">Dashboard</div>
+                    <div class="col dashboard-list py-3 px-4 border my-3">My Profile</div>
+                    <div class="col dashboard-list py-3 px-4 border my-3">Order Bidding</div>
+                    <div class="col dashboard-list py-3 px-4 border my-3">Purchase</div>
+                    <div class="col dashboard-list py-3 px-4 border my-3 bg-danger text-white">Logout</div>
+                </div>
+                <div class="col-12 col-md-9 my-3">
+                    <div class="row m-0">
+                        <div class="col-12 col-md-6 p-0 dashboard-item mb-4 border">
+                            <h5 class="bg-black px-4 py-3 text-white">
+                                Order Pending
+                            </h5>
+                            <div class="order-pending px-4 py-4">
+                                <h3 id="pending-orders" class="display-5 fw-bold"><span>00</span></h3>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 p-0 dashboard-item mb-4 border">
+                            <h5 class="bg-black px-4 py-3 text-white">
+                                Orders in Processing
+                            </h5>
+                            <div class="order-pending px-4 py-4">
+                                <h3 id="pending-orders" class="display-5 fw-bold"><span>60</span></h3>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 p-0 dashboard-item mb-4 border">
+                            <h5 class="bg-black px-4 py-3 text-white">
+                                Delivered
+                            </h5>
+                            <div class="order-pending px-4 py-4">
+                                <h3 id="pending-orders" class="display-5 fw-bold"><span>40</span></h3>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 p-0 dashboard-item mb-4 border">
+                            <h5 class="bg-black px-4 py-3 text-white">
+                                Total Completed Orders
+                            </h5>
+                            <div class="order-pending px-4 py-4">
+                                <h3 id="pending-orders" class="display-5 fw-bold"><span>70</span></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+
+
+    <!-- Footer -->
+    <div class="container-fluid footer bg-black text-white px-md-5">
+      <div class="row mx-md-5 pt-5">
+        <div class="col-12 col-md-6 col-lg-3 pt-5">
+          
+          <div class="access">
+            <h4 class="mb-3">Join Newsletter</h4>
+            <p class="mb-4">Subscribe our newsletter to get more free design course and resource.</p>
+            <input type="text" name="subscribe" class="form-control" placeholder="your email">
+            <button class="btn btn-danger btn-md mt-3" type="submit">Submit</button>
+
+            <div class="socials mt-4">
+              <a class="me-4" href=""><i class="fa fs-4 fa-solid fa-twitter"></i></a>
+              <a class="me-4" href=""><i class="fa fs-4 fa-solid fa-facebook"></i></a>
+              <a class="me-4" href=""><i class="fa fs-4 fa-solid fa-whatsapp"></i></a>
+              <a class="me-4" href=""><i class="fa fs-4 fa-solid fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 pt-5">
+
+          <div class="links">
+            <h4 class="mb-4">Important Links</h4>
+
+            <div class="important-links d-grid gap-3">
+              <a href="">All Products</a>
+              <a href="">How It Works</a>
+              <a href="">My Account</a>
+              <a href="">About Company</a>
+              <a href="">Our News Feed</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 pt-5">
+
+          <div class="help">
+            <h4 class="mb-4">Help & FAQs</h4>
+
+            <div class="help-links d-grid gap-3">
+              <a href="">Help Center</a>
+              <a href="">Customer FAQs</a>
+              <a href="">Terms and Conditions</a>
+              <a href="">Security Information</a>
+              <a href="">Mercahnt Add Policy</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 pt-5">
+
+          <div class="about">
+            <img src="./assets/images/footer-logo2.png" alt="logo" class="img-fluid mb-3">
+
+            <p>Add. 168/170, Avenue 01, Mirpur DOHS, Bangladesh.</p>
+            <p>Phone: +029169852 / +88017600000</p>
+            <p>Email: info.example@gmail.com</p>
+          </div>
+        </div>
+      </div>
+      <div class="row border-top mt-5">
+        <div class="col-12 d-grid d-md-flex justify-content-between align-items-center pt-3 px-3">
+          <p>Copyright: Siegs Auction House &copy;2022</p>
+          <p>We accept:
+            <span class="d-flex justify-content-between">
+
+              <img src="./assets/images/footer-pay1.png" alt="VISA" class="img-fluid mx-2">
+              <img src="./assets/images/footer-pay2.png" alt="BLU" class="img-fluid mx-2">
+              <img src="./assets/images/footer-pay3.png" alt="VENMO" class="img-fluid mx-2">
+              <img src="./assets/images/footer-pay4.png" alt="PayPal" class="img-fluid mx-2">
+              <img src="./assets/images/footer-pay5.png" alt="MasterCard" class="img-fluid mx-2">
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+  </script>
+    <script src="./assets/js/script.js"></script>
+
+    
+  </body>
+</html>
