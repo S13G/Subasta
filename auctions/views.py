@@ -145,12 +145,6 @@ def closed_listings(request):
     # displays all closed items
     categories = Category.objects.all()
     closed_items = AuctionItem.objects.filter(closed=True)
-    # for item in closed_items:
-    #     item_winner = item.bids.last().bidder
-    #     if request.user == item_winner:
-    #         total_items_won = item.
-    #         # print(total_items_won)
-    #         pass
     results = []
     if request.method == "GET":
         closed_search_query = request.GET.get("closed-search-query")

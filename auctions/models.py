@@ -3,7 +3,7 @@ import uuid
 from autoslug import AutoSlugField
 # from cloudinary.models import CloudinaryField
 from django.core.validators import MinValueValidator
-from django.db import models, IntegrityError
+from django.db import models
 
 from users.models import User
 
@@ -63,12 +63,6 @@ class AuctionItem(models.Model):
     def commenters(self):
         queryset = self.comments.all().values_list("owner_id", flat=True)
         return queryset
-
-    # @property
-    # def auction_item_winner(self):
-    #     if self.closed:
-    #         return self.bids.last().bidder
-    #     return False
 
 
 class Watchlist(models.Model):
