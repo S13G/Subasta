@@ -151,4 +151,8 @@
         </div>
 
     </div>
+
+    {#    Pagination#}
+    {% include "templates/pagination.html" with queryset=watchlist_items custom_range=custom_range %}
+
 {% endblock body %}

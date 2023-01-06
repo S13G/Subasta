@@ -2,7 +2,6 @@
 {% load custom_tags %}
 {% load static %}
 
-<body>
 {% block body %}
     <!-- Header Section -->
     <div class="container-fluid bg-danger py-5 text-white">
@@ -171,6 +170,8 @@
         </div>
     </div>
 
+    {#    Pagination#}
+    {% include "templates/pagination.html" with queryset=closed_items custom_range=custom_range %}
+
+
 {% endblock body %}
-</body>
-</html>

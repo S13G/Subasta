@@ -8,7 +8,7 @@ from django.shortcuts import render, reverse, get_object_or_404, redirect
 
 from auctions.forms import AuctionForm, CommentForm, AuctionBidForm
 from auctions.models import AuctionItem, Category, Watchlist, AuctionBid
-from auctions.utils import watchlist_items_in_details, closed_items_in_details
+from auctions.utils import watchlist_items_in_details, closed_items_in_details, paginate_items
 
 
 def home(request):
@@ -26,7 +26,8 @@ def all_auctions(request):
     # this function handles all categories and active listings
     categories = Category.objects.all()
     items = AuctionItem.objects.all().exclude(closed=True)
-    context = {"categories": categories, "items": items}
+    custom_range, items = paginate_items(request, items, 9)
+    context = {"categories": categories, "items": items, "custom_range": custom_range}
     return render(request, "auctions/all-auctions.html", context)
 
 
@@ -65,6 +66,7 @@ def watchlist_item(request):
     # displays the watchlist items of each user and filter by search
     owner = request.user
     watchlist_items = Watchlist.objects.filter(user=owner)
+    custom_range, watchlist_items = paginate_items(request, watchlist_items, 9)
     results = []
     if request.method == "GET":
         watchlist_search_query = request.GET.get("watchlist-search-query")
@@ -75,7 +77,7 @@ def watchlist_item(request):
                 Q(item__listed_by__last_name__icontains=watchlist_search_query) |
                 Q(item__description__icontains=watchlist_search_query))
     context = {"watchlist_items": watchlist_items, "owner": owner, "results": results,
-               "watchlist_search_query": watchlist_search_query}
+               "watchlist_search_query": watchlist_search_query, "custom_range": custom_range}
     return render(request, "auctions/watchlist.html", context)
 
 
@@ -145,6 +147,7 @@ def closed_listings(request):
     # displays all closed items
     categories = Category.objects.all()
     closed_items = AuctionItem.objects.filter(closed=True)
+    custom_range, closed_items = paginate_items(request, closed_items, 9)
     results = []
     if request.method == "GET":
         closed_search_query = request.GET.get("closed-search-query")
@@ -155,7 +158,7 @@ def closed_listings(request):
                 Q(listed_by__last_name__icontains=closed_search_query) |
                 Q(description__icontains=closed_search_query), closed=True)
     context = {"closed_items": closed_items, "categories": categories, "closed_search_query": closed_search_query,
-               "results": results}
+               "results": results, "custom_range": custom_range}
     return render(request, "auctions/closed-listings.html", context)
 
 
