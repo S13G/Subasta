@@ -23,7 +23,7 @@ def home(request):
 
 
 def all_auctions(request):
-    # this function handles all categories and active listings
+    # this function handles all categories and active listings and pagination
     categories = Category.objects.all()
     items = AuctionItem.objects.all().exclude(closed=True)
     custom_range, items = paginate_items(request, items, 9)
