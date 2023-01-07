@@ -39,7 +39,8 @@ def category_view(request, slug):
     except Category.DoesNotExist:
         raise Http404()
     items = category.items.all()
-    context = {"items": items, "category": category, "categories": categories}
+    custom_range, items = paginate_items(request, items, 9)
+    context = {"items": items, "category": category, "categories": categories, "custom_range": custom_range}
     return render(request, "auctions/auction-filter.html", context)
 
 
@@ -171,7 +172,9 @@ def closed_category_view(request, slug):
     except Category.DoesNotExist:
         raise Http404()
     closed_items = category.items.filter(closed=True)
-    context = {"closed_items": closed_items, "category": category, "categories": categories}
+    custom_range, closed_items = paginate_items(request, closed_items, 9)
+    context = {"closed_items": closed_items, "category": category, "categories": categories,
+               "custom_range": custom_range}
     return render(request, "auctions/closed-auction-filter.html", context)
 
 

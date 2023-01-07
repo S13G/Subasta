@@ -104,4 +104,8 @@
         </div>
     </div>
 
+    {#    Pagination#}
+    {% include "templates/pagination.html" with queryset=closed_items custom_range=custom_range %}
+
+
 {% endblock body %}
