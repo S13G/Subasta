@@ -272,6 +272,7 @@ def search(request):
     return render(request, "auctions/search-items.html", context)
 
 
+# handles dashboard function
 @login_required(login_url='login')
 def dashboard(request):
     total_items_won = request.user.items_won.all().count()
